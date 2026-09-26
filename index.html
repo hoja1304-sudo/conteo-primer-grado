@@ -619,7 +619,7 @@ $('#btnBorrar').addEventListener('click', mesaPizarra.limpiar);
 
 // Indicaciones: el primer toque las lee; otro toque detiene el audio
 const INDICACIONES = {
-  decena: 'Toca una esfera amarilla, una esfera roja o la caja, y aparecerá en la pizarra blanca. Puedes sacar tantas esferas y cajas como quieras. Arrastra las esferas con el mouse hasta los lugares de la caja; cada caja tiene diez lugares. Si sacas un objeto fuera de la pizarra, regresa a su lugar. El botón Limpiar pizarra quita todo.',
+  decena: 'Toca una esfera amarilla, una esfera roja o la caja, y aparecerá en la pizarra blanca. Puedes sacar tantas esferas y cajas como quieras. Arrastra las esferas con el mouse hasta los lugares de la caja; cada caja tiene diez lugares. Si sacas un objeto fuera de la pizarra, desaparece. El botón Limpiar pizarra quita todo.',
   pizarra: 'Toca un objeto con el mouse y aparecerá en la pizarra blanca. Ahí podrás moverlo con el mouse. Puedes usar cada objeto las veces que quieras. Si sacas un objeto fuera de la pizarra, desaparece. Al tocar el botón Borrar pizarra, se quitan todos los objetos.',
   practica: 'Observa el número del cuadro. Toca los objetos con el mouse para colocarlos en la mesa blanca, hasta tener esa cantidad. Puedes moverlos con el mouse. Si sacas un objeto fuera de la mesa, desaparece. Cuando termines, toca el botón Comprobar. El botón Otro número te da un número nuevo.'
 };
@@ -898,7 +898,7 @@ $('#cjTira').parentElement.addEventListener('pointerdown', e => {
 /* ---------- Decena: pizarra con esferas amarillas y rojas y cajas de 10 lugares ---------- */
 // Tocar (o arrastrar) un objeto de la paleta lo pone en la pizarra; se pueden sacar todos los que se quiera.
 // Las esferas calzan en los lugares de las cajas; al mover una caja, sus esferas se mueven con ella.
-// Si un objeto se suelta fuera de la pizarra, regresa a donde estaba (uno nuevo regresa a la paleta).
+// Si un objeto se suelta fuera de la pizarra, desaparece (una caja se lleva sus esferas).
 const dcMesa = $('#dcMesa');
 let dcSel = null;
 function dcNuevo(t){
@@ -955,7 +955,6 @@ $('#decena').addEventListener('pointerdown', e => {
   // al tocar un lugar de una caja (sin esfera) se arrastra la caja completa
   e.preventDefault();
   const x0 = e.clientX, y0 = e.clientY, r0 = el.getBoundingClientRect(), dx = x0 - r0.left, dy = y0 - r0.top;
-  const origen = {padre: el.parentElement, left: el.style.left, top: el.style.top, siguiente: el.nextSibling};
   let arrastrando = false;
   const mover = ev => {
     if(!arrastrando){
@@ -977,10 +976,8 @@ $('#decena').addEventListener('pointerdown', e => {
     if(cx > R.left && cx < R.right && cy > R.top && cy < R.bottom){
       dcEnMesa(el, ev.clientX - dx - R.left - dcMesa.clientLeft, ev.clientY - dy - R.top - dcMesa.clientTop); return;
     }
-    // fuera de la pizarra: regresa a donde estaba (si era nuevo, a la paleta)
-    if(origen.padre === $('#dcPaleta')){ el.remove(); return; }
-    origen.padre.insertBefore(el, origen.siguiente && origen.siguiente.parentElement === origen.padre ? origen.siguiente : null);
-    el.style.left = origen.left; el.style.top = origen.top;
+    // fuera de la pizarra: desaparece (vuelve a la paleta de la sección Decena)
+    el.remove();
   };
   addEventListener('pointermove', mover); addEventListener('pointerup', soltar); addEventListener('pointercancel', soltar);
 });
