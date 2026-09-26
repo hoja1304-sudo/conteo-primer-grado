@@ -132,7 +132,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .nm-fila span{min-width:clamp(26px,6.4vw,52px);height:clamp(36px,8.6vw,60px);display:grid;place-items:center;border-radius:10px;font:700 clamp(1.15rem,4.2vw,2.2rem) Arial,Helvetica,sans-serif;color:#fff;background:linear-gradient(145deg,#312e81,#6d28d9 55%,#a21caf);border:2px solid #fcd34d;box-shadow:0 4px 8px rgba(49,46,129,.35)}
 .gr-estrellas{display:flex;justify-content:center;gap:clamp(6px,1.6vw,12px);margin:4px 0 10px}
 .gr-estrellas svg{width:clamp(34px,7vw,52px);height:auto;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}.btn-r6{background:#a16207}
-#apr3 .home-buttons .btn{padding:.8em .4em;font-size:clamp(1rem,2.6vw,1.5rem);overflow-wrap:anywhere}
+#apr3 .home-buttons .btn{padding:.8em .35em;font-size:clamp(.95rem,3.9vw,1.5rem);overflow-wrap:normal;word-break:keep-all;hyphens:none}
+@media (max-width:420px){#apr3 .home-buttons .btn-r5,#apr3 .home-buttons .btn-r6{grid-column:1/-1}}   /* en celular «Descomposición» (y «Verbal») ocupan toda la fila para no cortar la palabra */
 .cj-card{--ch:clamp(28px,calc((100vw - 96px)/9.7),68px);--gap:calc(var(--ch)*.16);text-align:center}
 .cj-ronda{display:inline-grid;place-items:center;min-height:48px;padding:0 16px;border-radius:14px;background:var(--panel);border:2px solid var(--line);font-weight:900;box-shadow:var(--shadow)}
 .cj-letrero{display:inline-block;margin:2px auto 12px;padding:.3em 1.1em;border-radius:18px;color:#fff;font-weight:900;letter-spacing:.02em;
