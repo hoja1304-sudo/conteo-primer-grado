@@ -122,6 +122,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 /* ---------- Agrupar en cajas ---------- */
 .btn-cajas{background:#b45309;color:#fff}
 .btn-r1{background:#16a34a}.btn-r2{background:#7c3aed}.btn-r3{background:#e0562b}.btn-r4{background:#0e7490}.btn-r5{background:#be185d}
+.nm-fila{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(3px,1.1vw,12px);margin:.7em 0 .3em}
+.nm-fila span{min-width:clamp(26px,6.4vw,52px);height:clamp(36px,8.6vw,60px);display:grid;place-items:center;border-radius:10px;font:700 clamp(1.15rem,4.2vw,2.2rem) Arial,Helvetica,sans-serif;color:#fff;background:linear-gradient(145deg,#312e81,#6d28d9 55%,#a21caf);border:2px solid #fcd34d;box-shadow:0 4px 8px rgba(49,46,129,.35)}
 .gr-estrellas{display:flex;justify-content:center;gap:clamp(6px,1.6vw,12px);margin:4px 0 10px}
 .gr-estrellas svg{width:clamp(34px,7vw,52px);height:auto;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}.btn-r6{background:#a16207}
 #apr3 .home-buttons .btn{padding:.8em .4em;font-size:clamp(1rem,2.6vw,1.5rem);overflow-wrap:anywhere}
@@ -670,6 +672,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   <div class="home-card">
     <span class="kicker">Aprendizaje esperado 3</span>
     <h2 id="ta3Numeral">🔢 Numeral</h2>
+    <div class="teo-box"><p>Es la representación numérica.</p><div class="nm-fila" aria-label="1, 2, 3, 4, 5, 6, 7, 8, 9"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div></div>
     <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
   </div>
 </section>
