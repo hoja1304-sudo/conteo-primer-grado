@@ -216,8 +216,17 @@ button{font:inherit;color:inherit;cursor:pointer}
 .vj-carta:disabled{cursor:default}
 
 /* ---------- Literal: el cocodrilo come al pez ---------- */
-.lg-lago{position:relative;flex:1;min-height:100vh;min-height:100dvh;overflow:hidden;touch-action:manipulation;
-  background:linear-gradient(180deg,#8fd3c7 0%,#3aa597 22%,#1f7a70 60%,#12524b 100%)}
+.lg-lago{position:relative;flex:1;min-height:100vh;min-height:100dvh;overflow:hidden;touch-action:none;cursor:crosshair;
+  background:linear-gradient(180deg,#d7f3ff 0%,#8fd8f5 12%,#47b3e0 45%,#1e81b8 80%,#155f8c 100%)}
+/* pecera: vidrio, superficie del agua, algas que se mecen y burbujas */
+.pc-vidrio{position:absolute;inset:0;pointer-events:none;z-index:3;border:clamp(6px,1.2vw,12px) solid rgba(20,50,70,.85);border-top-width:clamp(10px,2vw,18px);
+  box-shadow:inset 0 clamp(14px,3vh,26px) 0 rgba(255,255,255,.35),inset 18px 0 30px rgba(255,255,255,.18),inset -18px 0 30px rgba(0,40,70,.25)}
+.pc-alga{position:absolute;bottom:3%;width:clamp(22px,4vw,44px);transform-origin:50% 100%;pointer-events:none;z-index:1;animation:pcMece 4s ease-in-out infinite alternate}
+.pc-alga svg{width:100%;height:100%;display:block}
+@keyframes pcMece{from{rotate:-7deg;skew:-6deg 0}to{rotate:7deg;skew:6deg 0}}
+.pc-burbuja{position:absolute;bottom:6%;border-radius:50%;pointer-events:none;border:2px solid rgba(255,255,255,.75);background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.8),rgba(255,255,255,.1) 60%);
+  animation:pcSube 7s linear infinite}
+@keyframes pcSube{0%{transform:translate(0,0);opacity:0}10%{opacity:1}50%{transform:translate(8px,-45vh)}90%{opacity:1}100%{transform:translate(-6px,-88vh);opacity:0}}
 .lg-nenufar{position:absolute;width:clamp(60px,10vw,110px);aspect-ratio:1.5;border-radius:50%;pointer-events:none;
   background:radial-gradient(ellipse at 40% 40%,#86c56a,#3f8f2a 70%);clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 55%,50% 50%,0 45%);opacity:.85}
 .lg-nenufar.b{transform:scaleX(-1)}
@@ -228,7 +237,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .lg-palabra{font:700 clamp(1.8rem,6.4vw,3rem) Georgia,"Times New Roman",serif;color:#1e3a8a;line-height:1.1}
 .lg-palabra.nuevo{animation:numIn .45s cubic-bezier(.2,1.6,.4,1)}
 .lg-peces{position:absolute;inset:0}
-.lg-pez{position:absolute;left:0;top:0;width:clamp(78px,13vw,118px);aspect-ratio:100/64;border:0;padding:0;background:none;cursor:pointer;
+.lg-pez{position:absolute;left:0;top:0;width:clamp(78px,13vw,118px);aspect-ratio:100/64;pointer-events:none;
   will-change:transform;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
 .lg-pez svg{width:100%;height:100%;display:block;pointer-events:none;transition:transform .25s}
 .lg-pez.der svg{transform:scaleX(-1)}
@@ -241,12 +250,13 @@ button{font:inherit;color:inherit;cursor:pointer}
 .lg-pez.der.mal svg{animation:lgMalD .5s}
 @keyframes lgMalD{0%,100%{transform:scaleX(-1)}20%,60%{transform:scaleX(-1) rotate(-14deg)}40%,80%{transform:scaleX(-1) rotate(14deg)}}
 .lg-pez.comido{transition:transform .45s ease-in,opacity .45s ease-in;pointer-events:none}
-.lg-croco{position:absolute;left:2%;bottom:max(4px,env(safe-area-inset-bottom));width:clamp(190px,34vw,330px);z-index:4;pointer-events:none;
-  animation:lgFlota 3s ease-in-out infinite}
-.lg-croco svg{width:100%;height:auto;display:block;overflow:visible}
-@keyframes lgFlota{50%{transform:translateY(5px)}}
-.lg-mandibula{transform-box:view-box;transform-origin:60px 72px;transition:transform .18s}
-.lg-croco.abre .lg-mandibula{transform:rotate(24deg)}
+.lg-croco{position:absolute;left:0;top:0;width:clamp(170px,30vw,270px);aspect-ratio:260/100;z-index:4;pointer-events:none;will-change:transform;
+  filter:drop-shadow(0 6px 5px rgba(0,30,25,.45))}
+.lg-croco svg{width:100%;height:100%;display:block;overflow:visible}
+#lgMsg{top:auto;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);flex-direction:row;gap:10px;padding:8px 16px;
+  font-size:clamp(1.05rem,3vw,1.5rem);pointer-events:none;white-space:nowrap}
+#lgMsg img{width:clamp(44px,8vw,64px)}
+.lg-ayuda{margin:0;color:#fff;font-weight:800;font-size:clamp(.8rem,2.2vw,1rem);text-shadow:0 1px 3px rgba(0,0,0,.6);text-align:center}
 
 /* ---------- Juego: burbujas en el océano ---------- */
 .screen.oc{padding:0;align-items:stretch;justify-content:stretch}
@@ -747,41 +757,36 @@ button{font:inherit;color:inherit;cursor:pointer}
 <section class="screen oc" id="a3LitJuego" aria-labelledby="tLg">
   <div class="lg-lago" id="lgLago">
     <svg class="oc-fondo" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
-      <g fill="#fff" opacity=".06"><path d="M60 0 L130 0 L300 600 L190 600z"/><path d="M430 0 L470 0 L610 600 L530 600z"/><path d="M770 0 L840 0 L990 600 L870 600z"/></g>
-      <g fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="3" stroke-linecap="round">
-        <path d="M120 250 q30 -10 60 0 t60 0"/><path d="M620 180 q30 -10 60 0 t60 0"/><path d="M380 420 q30 -10 60 0 t60 0"/><path d="M780 470 q30 -10 60 0 t60 0"/>
-      </g>
-      <g fill="none" stroke-linecap="round" stroke-width="9">
-        <path d="M20 600 Q30 520 18 440" stroke="#3f7a2a"/><path d="M42 600 Q50 500 44 420" stroke="#4d8b31"/><path d="M64 600 Q60 530 72 470" stroke="#3f7a2a"/>
-        <path d="M940 600 Q930 520 946 450" stroke="#4d8b31"/><path d="M968 600 Q976 510 962 430" stroke="#3f7a2a"/>
-      </g>
-      <g fill="#7c4a1e"><ellipse cx="44" cy="416" rx="6" ry="18"/><ellipse cx="962" cy="426" rx="6" ry="18"/></g>
+      <g fill="#fff" opacity=".10"><path d="M80 0 L150 0 L320 560 L210 560z"/><path d="M440 0 L480 0 L620 560 L540 560z"/><path d="M780 0 L850 0 L990 560 L870 560z"/></g>
+      <path d="M0 555 Q120 540 250 552 T520 548 T800 553 T1000 546 V600 H0z" fill="#dcc08f"/>
+      <g><ellipse cx="331" cy="557" rx="12" ry="4" fill="#d6b98c"/><ellipse cx="840" cy="582" rx="7" ry="6" fill="#f1e4c8"/><ellipse cx="59" cy="580" rx="9" ry="4" fill="#d6b98c"/><ellipse cx="444" cy="574" rx="7" ry="5" fill="#d6b98c"/><ellipse cx="564" cy="575" rx="6" ry="8" fill="#d6b98c"/><ellipse cx="970" cy="562" rx="6" ry="8" fill="#f1e4c8"/><ellipse cx="406" cy="551" rx="9" ry="4" fill="#f1e4c8"/><ellipse cx="879" cy="556" rx="10" ry="7" fill="#c9a46e"/><ellipse cx="553" cy="555" rx="10" ry="8" fill="#cbd5e1"/><ellipse cx="698" cy="559" rx="7" ry="8" fill="#f1e4c8"/><ellipse cx="654" cy="560" rx="11" ry="4" fill="#f1e4c8"/><ellipse cx="729" cy="552" rx="6" ry="8" fill="#c9a46e"/><ellipse cx="508" cy="591" rx="14" ry="7" fill="#cbd5e1"/><ellipse cx="321" cy="577" rx="13" ry="6" fill="#e8d3ae"/><ellipse cx="254" cy="598" rx="8" ry="5" fill="#d6b98c"/><ellipse cx="588" cy="567" rx="14" ry="7" fill="#e8d3ae"/><ellipse cx="746" cy="576" rx="10" ry="8" fill="#d6b98c"/><ellipse cx="120" cy="580" rx="12" ry="5" fill="#cbd5e1"/><ellipse cx="350" cy="557" rx="13" ry="7" fill="#d6b98c"/><ellipse cx="985" cy="590" rx="7" ry="8" fill="#f1e4c8"/><ellipse cx="808" cy="568" rx="11" ry="6" fill="#f1e4c8"/><ellipse cx="508" cy="585" rx="13" ry="4" fill="#cbd5e1"/><ellipse cx="95" cy="565" rx="13" ry="4" fill="#d6b98c"/><ellipse cx="748" cy="592" rx="10" ry="8" fill="#a3a3a3"/><ellipse cx="841" cy="576" rx="10" ry="7" fill="#a3a3a3"/><ellipse cx="355" cy="549" rx="13" ry="6" fill="#c9a46e"/><ellipse cx="625" cy="555" rx="13" ry="4" fill="#c9a46e"/><ellipse cx="786" cy="566" rx="8" ry="5" fill="#b98d57"/><ellipse cx="400" cy="579" rx="7" ry="5" fill="#b98d57"/><ellipse cx="411" cy="583" rx="10" ry="5" fill="#cbd5e1"/><ellipse cx="440" cy="583" rx="10" ry="7" fill="#e8d3ae"/><ellipse cx="699" cy="572" rx="9" ry="5" fill="#d6b98c"/><ellipse cx="180" cy="557" rx="9" ry="5" fill="#d6b98c"/><ellipse cx="496" cy="585" rx="8" ry="6" fill="#e8d3ae"/><ellipse cx="4" cy="557" rx="12" ry="8" fill="#e8d3ae"/><ellipse cx="624" cy="584" rx="11" ry="5" fill="#a3a3a3"/><ellipse cx="879" cy="580" rx="6" ry="7" fill="#cbd5e1"/><ellipse cx="798" cy="591" rx="14" ry="7" fill="#b98d57"/><ellipse cx="408" cy="573" rx="7" ry="7" fill="#a3a3a3"/><ellipse cx="410" cy="551" rx="9" ry="4" fill="#c9a46e"/><ellipse cx="451" cy="558" rx="7" ry="6" fill="#f1e4c8"/><ellipse cx="53" cy="554" rx="6" ry="8" fill="#c9a46e"/><ellipse cx="549" cy="554" rx="11" ry="8" fill="#d6b98c"/><ellipse cx="72" cy="561" rx="12" ry="5" fill="#a3a3a3"/><ellipse cx="258" cy="570" rx="11" ry="7" fill="#d6b98c"/><ellipse cx="118" cy="579" rx="13" ry="7" fill="#b98d57"/><ellipse cx="319" cy="553" rx="8" ry="4" fill="#a3a3a3"/><ellipse cx="350" cy="595" rx="10" ry="7" fill="#cbd5e1"/><ellipse cx="708" cy="558" rx="14" ry="4" fill="#c9a46e"/><ellipse cx="973" cy="581" rx="11" ry="5" fill="#a3a3a3"/><ellipse cx="556" cy="549" rx="14" ry="6" fill="#a3a3a3"/><ellipse cx="884" cy="553" rx="10" ry="8" fill="#e8d3ae"/><ellipse cx="930" cy="558" rx="11" ry="5" fill="#f1e4c8"/><ellipse cx="554" cy="597" rx="14" ry="6" fill="#a3a3a3"/><ellipse cx="228" cy="587" rx="9" ry="5" fill="#cbd5e1"/><ellipse cx="410" cy="595" rx="9" ry="5" fill="#f1e4c8"/><ellipse cx="504" cy="570" rx="6" ry="4" fill="#cbd5e1"/><ellipse cx="286" cy="578" rx="10" ry="5" fill="#a3a3a3"/><ellipse cx="619" cy="570" rx="13" ry="6" fill="#e8d3ae"/><ellipse cx="82" cy="562" rx="7" ry="5" fill="#b98d57"/><ellipse cx="201" cy="569" rx="9" ry="7" fill="#f1e4c8"/><ellipse cx="921" cy="587" rx="6" ry="7" fill="#a3a3a3"/><ellipse cx="352" cy="589" rx="7" ry="4" fill="#b98d57"/><ellipse cx="801" cy="593" rx="9" ry="7" fill="#c9a46e"/><ellipse cx="444" cy="598" rx="11" ry="4" fill="#cbd5e1"/><ellipse cx="968" cy="594" rx="12" ry="7" fill="#b98d57"/><ellipse cx="761" cy="553" rx="8" ry="5" fill="#c9a46e"/><ellipse cx="28" cy="557" rx="13" ry="5" fill="#f1e4c8"/><ellipse cx="846" cy="586" rx="13" ry="6" fill="#c9a46e"/><ellipse cx="561" cy="583" rx="8" ry="4" fill="#d6b98c"/><ellipse cx="818" cy="594" rx="7" ry="8" fill="#a3a3a3"/><ellipse cx="956" cy="556" rx="12" ry="5" fill="#cbd5e1"/><ellipse cx="894" cy="561" rx="6" ry="6" fill="#c9a46e"/><ellipse cx="299" cy="580" rx="9" ry="8" fill="#e8d3ae"/><ellipse cx="265" cy="582" rx="12" ry="5" fill="#d6b98c"/><ellipse cx="931" cy="595" rx="11" ry="7" fill="#a3a3a3"/><ellipse cx="597" cy="581" rx="12" ry="8" fill="#c9a46e"/><ellipse cx="544" cy="557" rx="14" ry="8" fill="#d6b98c"/><ellipse cx="893" cy="576" rx="8" ry="8" fill="#d6b98c"/><ellipse cx="794" cy="557" rx="8" ry="5" fill="#b98d57"/><ellipse cx="633" cy="594" rx="7" ry="8" fill="#d6b98c"/><ellipse cx="333" cy="591" rx="14" ry="8" fill="#f1e4c8"/><ellipse cx="494" cy="598" rx="7" ry="8" fill="#d6b98c"/><ellipse cx="254" cy="560" rx="10" ry="4" fill="#cbd5e1"/><ellipse cx="100" cy="580" rx="13" ry="8" fill="#d6b98c"/><ellipse cx="778" cy="552" rx="13" ry="6" fill="#f1e4c8"/><ellipse cx="996" cy="580" rx="14" ry="5" fill="#a3a3a3"/><ellipse cx="283" cy="576" rx="14" ry="8" fill="#cbd5e1"/><ellipse cx="489" cy="580" rx="9" ry="8" fill="#e8d3ae"/><ellipse cx="944" cy="583" rx="9" ry="7" fill="#c9a46e"/><ellipse cx="426" cy="555" rx="12" ry="7" fill="#e8d3ae"/><ellipse cx="74" cy="590" rx="9" ry="7" fill="#d6b98c"/><ellipse cx="217" cy="590" rx="10" ry="4" fill="#cbd5e1"/><ellipse cx="158" cy="593" rx="11" ry="5" fill="#e8d3ae"/><ellipse cx="904" cy="556" rx="13" ry="5" fill="#a3a3a3"/><ellipse cx="975" cy="554" rx="12" ry="7" fill="#c9a46e"/><ellipse cx="683" cy="562" rx="8" ry="7" fill="#f1e4c8"/><ellipse cx="413" cy="569" rx="12" ry="5" fill="#e8d3ae"/><ellipse cx="326" cy="553" rx="11" ry="4" fill="#e8d3ae"/><ellipse cx="567" cy="577" rx="13" ry="4" fill="#b98d57"/><ellipse cx="339" cy="581" rx="10" ry="8" fill="#d6b98c"/><ellipse cx="115" cy="598" rx="9" ry="4" fill="#d6b98c"/><ellipse cx="271" cy="565" rx="6" ry="5" fill="#e8d3ae"/><ellipse cx="773" cy="556" rx="12" ry="6" fill="#b98d57"/><ellipse cx="152" cy="582" rx="14" ry="8" fill="#b98d57"/><ellipse cx="717" cy="568" rx="7" ry="6" fill="#d6b98c"/><ellipse cx="818" cy="592" rx="8" ry="7" fill="#d6b98c"/><ellipse cx="275" cy="549" rx="7" ry="6" fill="#d6b98c"/><ellipse cx="622" cy="562" rx="7" ry="6" fill="#cbd5e1"/><ellipse cx="124" cy="577" rx="6" ry="6" fill="#f1e4c8"/><ellipse cx="427" cy="565" rx="8" ry="4" fill="#f1e4c8"/><ellipse cx="726" cy="563" rx="7" ry="5" fill="#e8d3ae"/><ellipse cx="51" cy="559" rx="9" ry="6" fill="#a3a3a3"/><ellipse cx="312" cy="581" rx="9" ry="6" fill="#b98d57"/><ellipse cx="512" cy="591" rx="8" ry="6" fill="#e8d3ae"/><ellipse cx="822" cy="549" rx="10" ry="4" fill="#d6b98c"/><ellipse cx="18" cy="594" rx="14" ry="8" fill="#c9a46e"/><ellipse cx="526" cy="578" rx="9" ry="7" fill="#d6b98c"/><ellipse cx="674" cy="589" rx="12" ry="7" fill="#f1e4c8"/><ellipse cx="854" cy="573" rx="14" ry="6" fill="#a3a3a3"/><ellipse cx="220" cy="562" rx="11" ry="5" fill="#cbd5e1"/><ellipse cx="903" cy="593" rx="8" ry="7" fill="#e8d3ae"/><ellipse cx="55" cy="556" rx="6" ry="4" fill="#a3a3a3"/><ellipse cx="758" cy="564" rx="12" ry="5" fill="#d6b98c"/><ellipse cx="86" cy="590" rx="12" ry="8" fill="#a3a3a3"/><ellipse cx="994" cy="566" rx="9" ry="6" fill="#d6b98c"/><ellipse cx="470" cy="559" rx="8" ry="6" fill="#b98d57"/><ellipse cx="3" cy="564" rx="11" ry="6" fill="#f1e4c8"/><ellipse cx="331" cy="563" rx="6" ry="6" fill="#c9a46e"/><ellipse cx="365" cy="559" rx="6" ry="6" fill="#b98d57"/><ellipse cx="85" cy="578" rx="10" ry="8" fill="#a3a3a3"/><ellipse cx="205" cy="563" rx="14" ry="4" fill="#d6b98c"/><ellipse cx="270" cy="553" rx="8" ry="7" fill="#f1e4c8"/><ellipse cx="42" cy="573" rx="6" ry="6" fill="#e8d3ae"/><ellipse cx="644" cy="562" rx="7" ry="8" fill="#f1e4c8"/><ellipse cx="873" cy="596" rx="8" ry="8" fill="#b98d57"/><ellipse cx="782" cy="568" rx="13" ry="5" fill="#e8d3ae"/><ellipse cx="741" cy="587" rx="8" ry="4" fill="#cbd5e1"/><ellipse cx="855" cy="593" rx="14" ry="7" fill="#a3a3a3"/><ellipse cx="717" cy="580" rx="8" ry="8" fill="#cbd5e1"/><ellipse cx="516" cy="584" rx="6" ry="8" fill="#cbd5e1"/><ellipse cx="914" cy="593" rx="9" ry="4" fill="#d6b98c"/><ellipse cx="42" cy="556" rx="11" ry="4" fill="#b98d57"/><ellipse cx="855" cy="576" rx="14" ry="4" fill="#a3a3a3"/><ellipse cx="19" cy="588" rx="14" ry="5" fill="#b98d57"/><ellipse cx="270" cy="548" rx="13" ry="4" fill="#a3a3a3"/><ellipse cx="954" cy="580" rx="14" ry="4" fill="#a3a3a3"/><ellipse cx="538" cy="552" rx="13" ry="6" fill="#cbd5e1"/><ellipse cx="76" cy="564" rx="9" ry="5" fill="#c9a46e"/><ellipse cx="757" cy="589" rx="13" ry="7" fill="#cbd5e1"/><ellipse cx="391" cy="552" rx="13" ry="6" fill="#cbd5e1"/><ellipse cx="47" cy="587" rx="9" ry="4" fill="#f1e4c8"/><ellipse cx="150" cy="569" rx="10" ry="6" fill="#f1e4c8"/><ellipse cx="581" cy="556" rx="6" ry="7" fill="#d6b98c"/><ellipse cx="497" cy="565" rx="7" ry="5" fill="#a3a3a3"/><ellipse cx="501" cy="566" rx="14" ry="6" fill="#b98d57"/><ellipse cx="477" cy="577" rx="7" ry="8" fill="#c9a46e"/><ellipse cx="319" cy="553" rx="13" ry="4" fill="#e8d3ae"/><ellipse cx="469" cy="552" rx="14" ry="7" fill="#e8d3ae"/><ellipse cx="396" cy="561" rx="9" ry="4" fill="#f1e4c8"/></g>
+      <g transform="translate(700 520)"><path d="M0 40 Q10 0 40 -6 Q70 0 80 40z" fill="#9ca3af"/><path d="M28 40 Q30 18 40 16 Q50 18 52 40z" fill="#374151"/></g>
+      <g transform="translate(240 540)" fill="#f472b6"><path d="M0 20 Q-6 -8 6 -14 Q2 2 10 18z"/><path d="M12 20 Q14 -10 26 -12 Q18 4 22 20z"/></g>
     </svg>
-    <div class="lg-nenufar" style="left:6%;top:62%" aria-hidden="true"></div>
-    <div class="lg-nenufar b" style="right:7%;top:40%" aria-hidden="true"></div>
+    <div class="pc-alga" style="left:3%;height:34%;animation-duration:4.2s;animation-delay:-0s" aria-hidden="true"><svg viewBox="0 0 40 200" preserveAspectRatio="none"><path d="M20 200 C6 170 34 150 18 120 C4 92 32 72 18 44 C10 26 22 10 20 0 C28 14 30 30 24 46 C38 74 12 94 26 122 C40 152 12 170 26 200Z" fill="#2f8f3a"/></svg></div><div class="pc-alga" style="left:7%;height:24%;animation-duration:3.4s;animation-delay:-1s;transform:scaleX(-1)" aria-hidden="true"><svg viewBox="0 0 40 200" preserveAspectRatio="none"><path d="M20 200 C6 170 34 150 18 120 C4 92 32 72 18 44 C10 26 22 10 20 0 C28 14 30 30 24 46 C38 74 12 94 26 122 C40 152 12 170 26 200Z" fill="#3fae4a"/></svg></div><div class="pc-alga" style="left:11%;height:40%;animation-duration:5s;animation-delay:-2s" aria-hidden="true"><svg viewBox="0 0 40 200" preserveAspectRatio="none"><path d="M20 200 C6 170 34 150 18 120 C4 92 32 72 18 44 C10 26 22 10 20 0 C28 14 30 30 24 46 C38 74 12 94 26 122 C40 152 12 170 26 200Z" fill="#237a30"/></svg></div><div class="pc-alga" style="left:46%;height:20%;animation-duration:3.8s;animation-delay:-1.5s;transform:scaleX(-1)" aria-hidden="true"><svg viewBox="0 0 40 200" preserveAspectRatio="none"><path d="M20 200 C6 170 34 150 18 120 C4 92 32 72 18 44 C10 26 22 10 20 0 C28 14 30 30 24 46 C38 74 12 94 26 122 C40 152 12 170 26 200Z" fill="#3fae4a"/></svg></div><div class="pc-alga" style="left:50%;height:28%;animation-duration:4.6s;animation-delay:-0.5s" aria-hidden="true"><svg viewBox="0 0 40 200" preserveAspectRatio="none"><path d="M20 200 C6 170 34 150 18 120 C4 92 32 72 18 44 C10 26 22 10 20 0 C28 14 30 30 24 46 C38 74 12 94 26 122 C40 152 12 170 26 200Z" fill="#2f8f3a"/></svg></div><div class="pc-alga" style="left:84%;height:38%;animation-duration:4.4s;animation-delay:-1.2s;transform:scaleX(-1)" aria-hidden="true"><svg viewBox="0 0 40 200" preserveAspectRatio="none"><path d="M20 200 C6 170 34 150 18 120 C4 92 32 72 18 44 C10 26 22 10 20 0 C28 14 30 30 24 46 C38 74 12 94 26 122 C40 152 12 170 26 200Z" fill="#237a30"/></svg></div><div class="pc-alga" style="left:89%;height:26%;animation-duration:3.6s;animation-delay:-2.2s" aria-hidden="true"><svg viewBox="0 0 40 200" preserveAspectRatio="none"><path d="M20 200 C6 170 34 150 18 120 C4 92 32 72 18 44 C10 26 22 10 20 0 C28 14 30 30 24 46 C38 74 12 94 26 122 C40 152 12 170 26 200Z" fill="#3fae4a"/></svg></div><div class="pc-alga" style="left:93%;height:32%;animation-duration:5.2s;animation-delay:-0.8s;transform:scaleX(-1)" aria-hidden="true"><svg viewBox="0 0 40 200" preserveAspectRatio="none"><path d="M20 200 C6 170 34 150 18 120 C4 92 32 72 18 44 C10 26 22 10 20 0 C28 14 30 30 24 46 C38 74 12 94 26 122 C40 152 12 170 26 200Z" fill="#2f8f3a"/></svg></div>
+    <span class="pc-burbuja" style="left:9%;animation-duration:7s;animation-delay:-1s;width:10px;height:10px" aria-hidden="true"></span><span class="pc-burbuja" style="left:9.6%;animation-duration:7s;animation-delay:-3.5s;width:7px;height:7px" aria-hidden="true"></span><span class="pc-burbuja" style="left:52%;animation-duration:8s;animation-delay:-2s;width:9px;height:9px" aria-hidden="true"></span><span class="pc-burbuja" style="left:52.8%;animation-duration:8s;animation-delay:-5s;width:6px;height:6px" aria-hidden="true"></span><span class="pc-burbuja" style="left:90%;animation-duration:6.5s;animation-delay:-0s;width:11px;height:11px" aria-hidden="true"></span><span class="pc-burbuja" style="left:90.5%;animation-duration:6.5s;animation-delay:-3s;width:7px;height:7px" aria-hidden="true"></span>
+    <div class="pc-vidrio" aria-hidden="true"></div>
     <div class="lg-peces" id="lgPeces"></div>
-    <div class="lg-croco" id="lgCroco"><svg viewBox="0 0 230 130" aria-hidden="true">
-        <ellipse cx="110" cy="118" rx="108" ry="10" fill="#0b3b3a" opacity=".35"/>
-        <path d="M6 112 Q14 72 52 62 L150 60 Q160 88 150 112 Z" fill="#3f7a2a"/>
-        <g fill="#2f5d1c"><path d="M20 84 l6 -10 l6 10z"/><path d="M34 76 l6 -10 l6 10z"/><path d="M48 70 l6 -10 l6 10z"/></g>
-        <path d="M60 70 L214 68 Q224 72 218 82 Q170 100 80 98 Q58 94 60 70Z" fill="#c2415d"/>
-        <g class="lg-mandibula">
-          <path d="M56 72 L216 70 Q226 74 219 84 Q170 102 78 100 Q54 96 56 72Z" fill="#6aa84f" stroke="#2f5d1c" stroke-width="2"/>
-          <g fill="#fff"><path d="M110 72 l4 -8 l4 8z"/><path d="M130 72 l4 -8 l4 8z"/><path d="M150 71 l4 -8 l4 8z"/><path d="M170 71 l4 -8 l4 8z"/><path d="M190 71 l4 -8 l4 8z"/></g>
-          <path d="M84 88 Q140 94 204 82" stroke="#4d8b31" stroke-width="2" fill="none"/>
+    <div class="lg-croco" id="lgCroco"><svg viewBox="-130 -50 260 100" aria-hidden="true">
+        <defs><linearGradient id="lgCuerpo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f7a2a"/><stop offset=".5" stop-color="#6aa84f"/><stop offset="1" stop-color="#3f7a2a"/></linearGradient></defs><g transform="scale(1 1.3)">
+        <g id="lgCola1" transform="translate(-40 0)">
+          <g id="lgCola2" transform="translate(-36 0)">
+            <path d="M2 -9 Q-22 -7 -42 -3 L-52 0 L-42 3 Q-22 7 2 9Z" fill="url(#lgCuerpo)" stroke="#2f5d1c" stroke-width="1.5"/>
+            <g fill="#2f5d1c"><path d="M-8 -2 l-5 2 l5 2z"/><path d="M-20 -2 l-5 2 l5 2z"/><path d="M-32 -1.5 l-4 1.5 l4 1.5z"/></g>
+          </g>
+          <path d="M4 -15 Q-18 -13 -38 -9 L-38 9 Q-18 13 4 15Z" fill="url(#lgCuerpo)" stroke="#2f5d1c" stroke-width="1.5"/>
+          <g fill="#2f5d1c"><path d="M-6 -2.5 l-6 2.5 l6 2.5z"/><path d="M-18 -2.5 l-6 2.5 l6 2.5z"/><path d="M-30 -2 l-5 2 l5 2z"/></g>
         </g>
-        <path d="M40 74 Q46 34 92 30 Q118 28 136 40 L208 46 Q224 48 222 60 L218 70 L56 74 Z" fill="#4d8b31" stroke="#2f5d1c" stroke-width="2"/>
-        <g fill="#fff"><path d="M100 73 l4 8 l4 -8z"/><path d="M120 73 l4 8 l4 -8z"/><path d="M140 72 l4 8 l4 -8z"/><path d="M160 72 l4 8 l4 -8z"/><path d="M180 72 l4 8 l4 -8z"/><path d="M200 71 l4 8 l4 -8z"/></g>
-        <g fill="#3f7a2a"><circle cx="150" cy="50" r="2.2"/><circle cx="170" cy="52" r="2.2"/><circle cx="190" cy="54" r="2.2"/><circle cx="128" cy="48" r="2.2"/></g>
-        <ellipse cx="212" cy="50" rx="3" ry="2" fill="#1f3d12"/>
-        <circle cx="74" cy="34" r="12" fill="#3f7a2a"/>
-        <circle cx="96" cy="30" r="15" fill="#4d8b31" stroke="#2f5d1c" stroke-width="2"/>
-        <circle cx="98" cy="28" r="10" fill="#fef9c3"/>
-        <ellipse cx="101" cy="28" rx="3.4" ry="7" fill="#111"/>
-        <circle cx="99" cy="24" r="2" fill="#fff"/>
-        <path d="M84 16 Q96 10 110 16" stroke="#2f5d1c" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <ellipse cx="70" cy="58" rx="7" ry="4" fill="#f9a8d4" opacity=".55"/>
-      </svg></div>
+        <g class="lgPata" data-x="28" data-y="16" data-s="1" transform="translate(28 16) scale(1 1)"><path d="M0 0 Q7 9 3 20 L-1 24 L-5 21 L-7 24 L-9 19 Q-7 10 -5 0Z" fill="#3f7a2a" stroke="#2f5d1c" stroke-width="1.5"/></g><g class="lgPata" data-x="28" data-y="-16" data-s="-1" transform="translate(28 -16) scale(1 -1)"><path d="M0 0 Q7 9 3 20 L-1 24 L-5 21 L-7 24 L-9 19 Q-7 10 -5 0Z" fill="#3f7a2a" stroke="#2f5d1c" stroke-width="1.5"/></g><g class="lgPata" data-x="-28" data-y="16" data-s="1" transform="translate(-28 16) scale(1 1)"><path d="M0 0 Q7 9 3 20 L-1 24 L-5 21 L-7 24 L-9 19 Q-7 10 -5 0Z" fill="#3f7a2a" stroke="#2f5d1c" stroke-width="1.5"/></g><g class="lgPata" data-x="-28" data-y="-16" data-s="-1" transform="translate(-28 -16) scale(1 -1)"><path d="M0 0 Q7 9 3 20 L-1 24 L-5 21 L-7 24 L-9 19 Q-7 10 -5 0Z" fill="#3f7a2a" stroke="#2f5d1c" stroke-width="1.5"/></g>
+        <path d="M-46 -14 Q-20 -25 20 -21 Q44 -17 54 -10 L54 10 Q44 17 20 21 Q-20 25 -46 14Z" fill="url(#lgCuerpo)" stroke="#2f5d1c" stroke-width="2"/>
+        <g fill="#2f5d1c" opacity=".75"><rect x="-38" y="-7.5" width="7" height="4.5" rx="2"/><rect x="-38" y="3" width="7" height="4.5" rx="2"/><rect x="-27" y="-7.5" width="7" height="4.5" rx="2"/><rect x="-27" y="3" width="7" height="4.5" rx="2"/><rect x="-16" y="-7.5" width="7" height="4.5" rx="2"/><rect x="-16" y="3" width="7" height="4.5" rx="2"/><rect x="-5" y="-7.5" width="7" height="4.5" rx="2"/><rect x="-5" y="3" width="7" height="4.5" rx="2"/><rect x="6" y="-7.5" width="7" height="4.5" rx="2"/><rect x="6" y="3" width="7" height="4.5" rx="2"/><rect x="17" y="-7.5" width="7" height="4.5" rx="2"/><rect x="17" y="3" width="7" height="4.5" rx="2"/><rect x="28" y="-7.5" width="7" height="4.5" rx="2"/><rect x="28" y="3" width="7" height="4.5" rx="2"/><rect x="39" y="-7.5" width="7" height="4.5" rx="2"/><rect x="39" y="3" width="7" height="4.5" rx="2"/></g>
+        <path d="M58 0 L120 -22 L120 22Z" fill="#c2415d"/>
+        <g id="lgMandSup"><path d="M56 0 L56 -11 Q80 -10 104 -8 Q119 -6 119 0Z" fill="#4d8b31" stroke="#2f5d1c" stroke-width="1.5"/><g fill="#fff"><path d="M66 0 l3 4 l3 -4z"/><path d="M75 0 l3 4 l3 -4z"/><path d="M84 0 l3 4 l3 -4z"/><path d="M93 0 l3 4 l3 -4z"/><path d="M102 0 l3 4 l3 -4z"/></g><circle cx="113" cy="-3" r="1.4" fill="#1f3d12"/></g>
+        <g id="lgMandInf"><path d="M56 0 L56 11 Q80 10 104 8 Q119 6 119 0Z" fill="#4d8b31" stroke="#2f5d1c" stroke-width="1.5"/><g fill="#fff"><path d="M66 0 l3 -4 l3 4z"/><path d="M75 0 l3 -4 l3 4z"/><path d="M84 0 l3 -4 l3 4z"/><path d="M93 0 l3 -4 l3 4z"/><path d="M102 0 l3 -4 l3 4z"/></g><circle cx="113" cy="3" r="1.4" fill="#1f3d12"/></g>
+        <ellipse cx="52" cy="0" rx="13" ry="14" fill="#4d8b31" stroke="#2f5d1c" stroke-width="1.5"/>
+        <g><circle cx="55" cy="-10" r="6" fill="#4d8b31" stroke="#2f5d1c" stroke-width="1.2"/><circle cx="56" cy="-10" r="3.8" fill="#fde047"/><ellipse cx="57" cy="-10" rx="1.2" ry="3.2" fill="#111"/></g>
+        <g><circle cx="55" cy="10" r="6" fill="#4d8b31" stroke="#2f5d1c" stroke-width="1.2"/><circle cx="56" cy="10" r="3.8" fill="#fde047"/><ellipse cx="57" cy="10" rx="1.2" ry="3.2" fill="#111"/></g>
+      </g></svg></div>
     <div class="oc-cabeza">
       <div class="oc-top">
         <button class="btn btn-ghost" data-go="a3LitFam">⬅ Familias</button>
@@ -790,8 +795,9 @@ button{font:inherit;color:inherit;cursor:pointer}
         <span class="oc-ronda" id="lgPuntos" title="Puntos">⭐ 0</span>
         <span class="oc-ronda" id="lgRonda" title="Ronda">🎯 1/10</span>
       </div>
-      <h2 class="sr" id="tLg">Juego del cocodrilo: come al pez</h2>
+      <h2 class="sr" id="tLg">Juego del cocodrilo en la pecera: come al pez</h2>
       <div class="lg-letrero" aria-live="polite"><span class="lg-come">Come al pez</span><span class="lg-palabra" id="lgPalabra">Diecinueve</span></div>
+      <p class="lg-ayuda">🐊 Mueve el cocodrilo con el mouse o el dedo (o con las flechas)</p>
     </div>
     <div class="oc-msg" id="lgMsg" hidden></div>
     <div class="oc-fin" id="lgFin" hidden>
@@ -1523,7 +1529,7 @@ function lgReloj(){
 function lgZona(){   // zona donde nadan los peces: debajo del letrero y encima del cocodrilo
   const lago = $('#lgLago'), cab = $('#a3LitJuego .oc-cabeza');
   const top = cab.offsetTop + cab.offsetHeight + 8, W = lago.clientWidth, H = lago.clientHeight;
-  return {W, top, bottom: Math.max(top + 120, H - $('#lgCroco').offsetHeight*.9)};
+  return {W, H, top, bottom: Math.max(top + 120, H*.9)};   // sin tocar la arena del fondo
 }
 // Los peces nadan por carriles horizontales; en cada carril van a la misma velocidad y bien
 // separados, y al salir por un lado entran por el otro: así nunca se tapan unos a otros.
@@ -1532,12 +1538,11 @@ function lgCrearPeces(){
   const sinNumero = LG.orden.length <= 3 ? 2 : 3;
   const nums = [...LG.orden, ...Array(sinNumero).fill(0)].sort(() => Math.random() - .5);
   nums.forEach(num => {
-    const el = document.createElement('button');
+    const el = document.createElement('div');
     el.className = 'lg-pez'; el.innerHTML = lgPezHTML(num);
-    el.setAttribute('aria-label', num ? `Pez con el número ${num}` : 'Pez sin número');
+    el.setAttribute('role', 'img'); el.setAttribute('aria-label', num ? `Pez con el número ${num}` : 'Pez sin número');
     cont.appendChild(el);
-    const pez = {el, num, w: el.offsetWidth || 90, h: el.offsetHeight || 58, amp: 3 + Math.random()*4, fase: Math.random()*6.28, vel: 1 + Math.random(), comido:false};
-    el.addEventListener('click', () => lgTocar(pez));
+    const pez = {el, num, w: el.offsetWidth || 90, h: el.offsetHeight || 58, amp: 3 + Math.random()*4, fase: Math.random()*6.28, vel: 1 + Math.random(), comido:false, malHasta:0};
     LG.peces.push(pez);
   });
   // carriles: tantos como quepan (máximo la mitad de los peces, redondeando hacia arriba)
@@ -1557,31 +1562,81 @@ function lgPaso(t){
     const base = (c.off + p.puesto/p.porCarril)*tramo + c.vx*seg;
     const x = ((base % tramo) + tramo) % tramo - p.w;
     const y = z.top + (p.carril + .5)*alto - p.h/2 + Math.sin(seg*p.vel + p.fase)*p.amp;
-    p.x = x; p.el.classList.toggle('der', c.vx > 0);
+    p.x = x; p.cx = x + p.w/2; p.cy = y + p.h/2; p.el.classList.toggle('der', c.vx > 0);
     p.el.style.transform = `translate(${x}px,${y}px)`;
   });
+  lgMoverCroco(t, z);
   LG.raf = requestAnimationFrame(lgPaso);
 }
+/* ---- el cocodrilo sigue al mouse o al dedo (como la tortuga del juego del océano) ---- */
+const CR = {x:0, y:0, ang:-Math.PI/2, mx:0, my:0, activo:false, anim:0, last:0, boca:0, chomp:0};
+function lgMoverCroco(t, z){
+  const el = $('#lgCroco'), w = el.offsetWidth, h = el.offsetHeight, k = w/260;
+  const dt = CR.last ? Math.min(.05, (t - CR.last)/1000) : .016; CR.last = t;
+  let dx = 0, dy = 0, v = 0;
+  if(CR.activo && LG.estado !== 'fin'){
+    // el punto que sigue es el hocico: el cuerpo va detrás
+    const hx = CR.x + Math.cos(CR.ang)*70*k, hy = CR.y + Math.sin(CR.ang)*70*k;
+    dx = CR.mx - hx; dy = CR.my - hy;
+    const d = Math.hypot(dx, dy);
+    if(d > 4){
+      const maxV = Math.max(170, z.W*.42), vel = Math.min(maxV, d*4.2);
+      CR.x += dx/d*vel*dt; CR.y += dy/d*vel*dt; v = vel;
+      let da = Math.atan2(dy, dx) - CR.ang;
+      while(da > Math.PI) da -= 2*Math.PI; while(da < -Math.PI) da += 2*Math.PI;
+      CR.ang += da*Math.min(1, dt*7);
+    }
+  }
+  CR.x = Math.max(w*.3, Math.min(z.W - w*.3, CR.x));
+  CR.y = Math.max(z.top + h*.3, Math.min(z.bottom, CR.y));
+  CR.anim += dt*(v > 20 ? 9 : 2.5);
+  // cola que se mueve, patas que reman y boca que se abre y se cierra (como Pac-Man)
+  const ola = Math.sin(CR.anim);
+  $('#lgCola1').setAttribute('transform', `translate(-40 0) rotate(${ola*14})`);
+  $('#lgCola2').setAttribute('transform', `translate(-36 0) rotate(${Math.sin(CR.anim - 1)*22})`);
+  $$('#lgCroco .lgPata').forEach((g, i) => g.setAttribute('transform',
+    `translate(${g.dataset.x} ${g.dataset.y}) scale(1 ${g.dataset.s}) rotate(${Math.sin(CR.anim*1.3 + (i % 2 ? 0 : Math.PI) + (i > 1 ? Math.PI : 0))*25})`));
+  CR.chomp = Math.max(0, CR.chomp - dt);
+  const boca = CR.chomp > 0 ? 30*Math.abs(Math.sin(CR.chomp*9)) : (Math.sin(t/1000*7) *.5 + .5)*(v > 20 ? 24 : 12);
+  $('#lgMandSup').setAttribute('transform', `rotate(${-boca} 56 0)`);
+  $('#lgMandInf').setAttribute('transform', `rotate(${boca} 56 0)`);
+  el.style.transform = `translate(${CR.x - w/2}px,${CR.y - h/2}px) rotate(${CR.ang}rad)`;
+  // ¿el hocico toca un pez?
+  const bx = CR.x + Math.cos(CR.ang)*95*k, by = CR.y + Math.sin(CR.ang)*95*k;
+  if(LG.estado === 'jugar') for(const p of LG.peces){
+    if(p.comido || p.cx === undefined) continue;
+    if(Math.hypot(p.cx - bx, p.cy - by) < p.w*.42){ lgContacto(p, bx, by); break; }
+  }
+}
+function lgApuntar(e){
+  const r = $('#lgLago').getBoundingClientRect();
+  CR.mx = e.clientX - r.left; CR.my = e.clientY - r.top; CR.activo = true;
+}
+$('#lgLago').addEventListener('pointermove', e => { if(!e.target.closest('.oc-top,.oc-fin')) lgApuntar(e); });
+$('#lgLago').addEventListener('pointerdown', e => { if(!e.target.closest('.oc-top,.oc-fin,button')) lgApuntar(e); });
+addEventListener('keydown', e => {
+  if(!$('#a3LitJuego').classList.contains('active')) return;
+  const d = {ArrowLeft:[-1,0], ArrowRight:[1,0], ArrowUp:[0,-1], ArrowDown:[0,1]}[e.key]; if(!d) return;
+  e.preventDefault(); CR.mx = CR.x + d[0]*140; CR.my = CR.y + d[1]*140; CR.activo = true;
+});
 function lgMsg(ok){
   const m = $('#lgMsg');
   m.className = 'oc-msg ' + (ok ? 'ok' : 'bad');
   m.innerHTML = ok ? `<img src="${PULGAR}" alt="">¡Muy bien!` : `<img src="${SORPRESA}" alt="">¡Inténtalo de nuevo!`;
   m.hidden = false; clearTimeout(LG.msgT); LG.msgT = setTimeout(() => m.hidden = true, ok ? 1200 : 1100);
 }
-function lgTocar(p){
-  if(LG.estado !== 'jugar' || p.comido) return;
+function lgContacto(p, bx, by){
   if(p.num === LG.n){
     LG.estado = 'come'; LG.puntos++; $('#lgPuntos').textContent = `⭐ ${LG.puntos}`;
-    // el pez va hacia la boca del cocodrilo, que se abre y lo muerde
-    const croco = $('#lgCroco'), rc = croco.getBoundingClientRect(), rl = $('#lgLago').getBoundingClientRect();
-    const bx = rc.left - rl.left + rc.width*.78 - p.w/2, by = rc.top - rl.top + rc.height*.52 - p.h/2;
-    p.comido = true; croco.classList.add('abre');
+    p.comido = true; CR.chomp = .7; lgMordida();
+    const r = $('#lgLago').getBoundingClientRect();
     p.el.classList.add('comido');
-    requestAnimationFrame(() => { p.el.style.transform = `translate(${bx}px,${by}px) scale(.25)`; p.el.style.opacity = '0'; });
-    setTimeout(() => { croco.classList.remove('abre'); lgMordida(); }, 430);
-    setTimeout(() => { chime(); fireworks(); lgMsg(true); }, 520);
-    LG.espera = setTimeout(() => { p.el.remove(); if(++LG.i < LG.orden.length) lgRonda(); else lgFinal(); }, 1700);
+    requestAnimationFrame(() => { p.el.style.transform = `translate(${bx - p.w/2}px,${by - p.h/2}px) scale(.2)`; p.el.style.opacity = '0'; });
+    setTimeout(() => { chime(); fireworks(); lgMsg(true); }, 250);
+    LG.espera = setTimeout(() => { p.el.remove(); if(++LG.i < LG.orden.length) lgRonda(); else lgFinal(); }, 1500);
   }else{
+    const ahora = performance.now(); if(ahora < p.malHasta) return;
+    p.malHasta = ahora + 1600;
     lgGracioso(); lgMsg(false);
     p.el.classList.remove('mal'); void p.el.offsetWidth; p.el.classList.add('mal');
   }
@@ -1599,6 +1654,7 @@ function lgPartida(){
   LG.orden = LG.azar ? todos.slice(0, LG.azar) : todos;
   LG.i = 0; LG.puntos = 0; $('#lgPuntos').textContent = '⭐ 0'; lgPintarAudio();
   lgCrearPeces();
+  { const z = lgZona(); CR.x = z.W/2; CR.y = z.H - $('#lgCroco').offsetHeight; CR.ang = -Math.PI/2; CR.activo = false; CR.last = 0; }
   LG.t0 = Date.now(); lgReloj(); clearInterval(LG.reloj); LG.reloj = setInterval(lgReloj, 1000);
   lgRonda();
   if(!LG.raf){ LG.last = 0; LG.raf = requestAnimationFrame(lgPaso); }
