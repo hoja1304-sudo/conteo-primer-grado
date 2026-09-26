@@ -119,6 +119,37 @@ button{font:inherit;color:inherit;cursor:pointer}
   background:#fff linear-gradient(rgba(30,58,138,.07) 1px,transparent 1px) 0 0/100% 32px}
 .mesa.encima{border-color:var(--accent)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* ---------- Agrupar en cajas ---------- */
+.btn-cajas{background:#b45309;color:#fff}
+.cj-card{--ch:clamp(28px,calc((100vw - 96px)/9.7),68px);--gap:calc(var(--ch)*.16);text-align:center}
+.cj-ronda{display:inline-grid;place-items:center;min-height:48px;padding:0 16px;border-radius:14px;background:var(--panel);border:2px solid var(--line);font-weight:900;box-shadow:var(--shadow)}
+.cj-letrero{display:inline-block;margin:2px auto 12px;padding:.3em 1.1em;border-radius:18px;color:#fff;font-weight:900;letter-spacing:.02em;
+  font-size:clamp(1.4rem,4.4vw,2.4rem);background:linear-gradient(145deg,#7c2d12,#b45309 55%,#d97706);border:3px solid #fcd34d;
+  box-shadow:0 0 0 4px rgba(252,211,77,.25),0 8px 18px rgba(124,45,18,.4);text-shadow:0 2px 4px rgba(0,0,0,.35)}
+.cj-tira{display:flex;justify-content:center;gap:var(--gap);width:max-content;max-width:100%;margin:0 auto 14px;padding:calc(var(--ch)*.2);
+  border-radius:16px;background:var(--panel2);border:2px solid var(--line)}
+.cj-cel,.cj-hueco{width:var(--ch);height:var(--ch);border-radius:calc(var(--ch)*.16);position:relative;flex:0 0 auto}
+.cj-cel{background:rgba(120,72,30,.10);box-shadow:inset 0 0 0 2px rgba(120,72,30,.18)}
+.choco{width:var(--ch);height:var(--ch);border:0;padding:0;margin:0;border-radius:calc(var(--ch)*.16);background:none;display:block;position:absolute;left:0;top:0;
+  cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.choco svg{width:100%;height:100%;display:block;pointer-events:none}
+.choco:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
+.choco.sel{outline:4px solid #2563eb;outline-offset:2px;transform:translateY(-4px)}
+.choco.arrastre{position:fixed;z-index:60;cursor:grabbing;transform:scale(1.1);filter:drop-shadow(0 6px 6px rgba(0,0,0,.4))}
+.cj-cajas{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:calc(var(--ch)*.5) calc(var(--ch)*.4);padding-top:calc(var(--ch)*.55)}
+.caja{position:relative;display:grid;gap:var(--gap);padding:calc(var(--ch)*.2);border-radius:8px;
+  background:linear-gradient(180deg,#d9a066,#c4874a);border:3px solid #8a5a2b;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08),0 5px 10px rgba(80,40,10,.3)}
+.caja::before,.caja::after{content:"";position:absolute;top:calc(var(--ch)*-.5);height:calc(var(--ch)*.5);width:48%;background:#e0ad74;border:3px solid #8a5a2b;border-bottom:0}
+.caja::before{left:-3px;transform-origin:bottom left;transform:skewX(-18deg);border-radius:6px 2px 0 0}
+.caja::after{right:-3px;transform-origin:bottom right;transform:skewX(18deg);border-radius:2px 6px 0 0}
+.cj-hueco{border:0;padding:0;background:#f3e2c4;box-shadow:inset 0 3px 7px rgba(90,45,18,.55);cursor:pointer}
+.cj-hueco.meta{box-shadow:inset 0 3px 7px rgba(90,45,18,.55),0 0 0 3px #fcd34d}
+.cj-hueco:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
+.cj-sig{margin-top:14px}
+.cj-sig .btn{margin:4px}
+.caja.llena{animation:cajaOk .5s ease}
+@keyframes cajaOk{50%{transform:scale(1.06)}}
+
 /* ---------- Juego: burbujas en el océano ---------- */
 .screen.oc{padding:0;align-items:stretch;justify-content:stretch}
 .oc-mar{position:relative;flex:1;min-height:100vh;min-height:100dvh;overflow:hidden;touch-action:manipulation;
@@ -365,7 +396,27 @@ button{font:inherit;color:inherit;cursor:pointer}
       <p>Implementar juegos como <b>«El barco se hunde»</b>, donde alguien exclama: <b>«¡El barco se hunde! Y para salvarse hay que formar grupos de…»</b> y en ese momento todos corren para formar el grupo con la cantidad que se especificó. Se recomienda iniciar con valores <b>menores que 10</b>. Luego, se solicita realizar <b>grupos de 10</b> y así introducir el concepto de <b>decena</b>.</p>
       <p>Hay que aprovechar este tipo de actividades para conversar acerca del <b>compañerismo</b> y la <b>solidaridad</b>, así como la importancia de <b>trabajar en equipo</b>.</p>
     </div>
+    <div class="home-buttons uno"><button class="btn btn-cajas" data-go="cajas">📦 Cajas</button></div>
     <button class="btn btn-ghost" data-go="inicio">🏠 Regresar al menú</button>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 2 · AGRUPAR EN CAJAS ============ -->
+<section class="screen pza" id="cajas" aria-labelledby="tCajas">
+  <div class="pza-wrap">
+    <div class="pza-bar">
+      <button class="btn btn-ghost" data-go="apr2" id="cjVolver">⬅ Volver al aprendizaje 2</button>
+      <button class="btn btn-indic" id="cjAudio">🔊 Escuchar</button>
+      <span class="cj-ronda" id="cjRonda" title="Ronda">🎯 1/4</span>
+    </div>
+    <div class="pza-card cj-card">
+      <h2 id="tCajas">📦 Agrupar en cajas</h2>
+      <p class="cj-letrero">Llena las cajas</p>
+      <div class="cj-tira" id="cjTira" role="group" aria-label="Chocolates"></div>
+      <div id="cjFb" aria-live="polite"></div>
+      <div class="cj-cajas" id="cjCajas" role="group" aria-label="Cajas"></div>
+      <div class="cj-sig"><button class="btn btn-otro" id="cjSig" hidden>➡ Siguientes cajas</button></div>
+    </div>
   </div>
 </section>
 
@@ -707,6 +758,92 @@ $$('.fam').forEach(b => b.addEventListener('click', () => {
 $('#btnAcsPractica').addEventListener('click', () => { show('a1Practica'); modoPractica(famAcs); });
 $('#btnAcsJuego').addEventListener('click', () => { show('a1Juego'); OC.max = famAcs; requestAnimationFrame(nuevaPartida); });
 
+
+/* ---------- Aprendizaje 2: agrupar 9 chocolates en cajas ---------- */
+// Rondas (en desorden): 3 cajas de 3, 4 cajas de 2, 2 cajas de 4 y 1 caja de 9.
+// Los chocolates se arrastran a los huecos (o se toca un chocolate y luego un hueco).
+// Sacar un chocolate de su hueco (arrastrarlo fuera o tocarlo) lo devuelve a la fila.
+const CHOCO = `<svg viewBox="0 0 60 60"><rect x="2" y="2" width="56" height="56" rx="9" fill="#5a2d12"/><g fill="#7b3f1d" stroke="#4a220c" stroke-width="1.5"><rect x="7" y="7" width="21" height="21" rx="4"/><rect x="32" y="7" width="21" height="21" rx="4"/><rect x="7" y="32" width="21" height="21" rx="4"/><rect x="32" y="32" width="21" height="21" rx="4"/></g><g stroke="#a86437" stroke-width="2.2" stroke-linecap="round" fill="none"><path d="M10 24 V11 H24"/><path d="M35 24 V11 H49"/><path d="M10 49 V36 H24"/><path d="M35 49 V36 H49"/></g></svg>`;
+const CJ_RONDAS = [{c:3, k:3}, {c:4, k:2}, {c:2, k:4}, {c:1, k:9}];
+const CJ = {orden:[], ronda:0, sel:null, listo:false};
+const CJ_COLS = {2:2, 3:3, 4:2, 9:3};
+function decirCajas(){ stopVoice(); if(!('speechSynthesis' in window)) return; loadVoices(); const tok = speechTok; setTimeout(() => { if(tok === speechTok) speakNow('Llena las cajas', 0, () => {}); }, 80); }
+function cjSeleccionar(ch){ CJ.sel = ch; $$('.choco').forEach(c => c.classList.toggle('sel', c === ch)); $$('.cj-hueco').forEach(h => h.classList.toggle('meta', !!ch && !h.firstChild)); }
+function cjCasa(ch){ $('#cjTira').children[+ch.dataset.i].appendChild(ch); }
+function cjPoner(ch, hueco){ hueco.appendChild(ch); pop(); cjSeleccionar(null); cjRevisar(); }
+function cjRevisar(){
+  $$('.caja').forEach(c => c.classList.toggle('llena', [...c.children].every(h => h.firstChild)));
+  if(CJ.listo || $$('.cj-hueco').some(h => !h.firstChild)) return;
+  CJ.listo = true;
+  const r = CJ_RONDAS[CJ.orden[CJ.ronda]], sobra = 9 - r.c*r.k;
+  const grupos = r.c === 1 ? `1 grupo de ${r.k} chocolates` : `${r.c} grupos de ${r.k} chocolates`;
+  const fin = CJ.ronda === CJ.orden.length - 1;
+  setTimeout(() => {
+    chime(); fireworks();
+    $('#cjFb').innerHTML = `<div class="fb ok"><img src="${PULGAR}" alt="">¡Muy bien! Formaste ${grupos}${sobra ? ` y sobró ${sobra} chocolate` : ''}.${fin ? '<br>¡Llenaste todas las cajas!' : ''}</div>`;
+    $('#cjSig').textContent = fin ? '🔁 Jugar otra vez' : '➡ Siguientes cajas'; $('#cjSig').hidden = false;
+  }, 250);
+}
+function cjRonda(){
+  const r = CJ_RONDAS[CJ.orden[CJ.ronda]];
+  CJ.listo = false; CJ.sel = null;
+  $('#cjRonda').textContent = `🎯 ${CJ.ronda + 1}/${CJ.orden.length}`;
+  $('#cjFb').innerHTML = ''; $('#cjSig').hidden = true;
+  $('#cjTira').innerHTML = Array.from({length:9}, (_, i) =>
+    `<div class="cj-cel"><button class="choco" data-i="${i}" aria-label="Chocolate ${i + 1}">${CHOCO}</button></div>`).join('');
+  $('#cjCajas').innerHTML = Array.from({length:r.c}, (_, i) =>
+    `<div class="caja" role="group" aria-label="Caja ${i + 1} de ${r.k} espacios" style="grid-template-columns:repeat(${CJ_COLS[r.k]},var(--ch))">` +
+    Array.from({length:r.k}, (_, j) => `<button class="cj-hueco" aria-label="Espacio ${j + 1} de la caja ${i + 1}"></button>`).join('') + '</div>').join('');
+  decirCajas();
+}
+function cjPartida(){ CJ.orden = [0,1,2,3].sort(() => Math.random() - .5); CJ.ronda = 0; cjRonda(); }
+$('#cjSig').addEventListener('click', () => { if(CJ.ronda >= CJ.orden.length - 1) cjPartida(); else { CJ.ronda++; cjRonda(); } });
+$$('[data-go="cajas"]').forEach(b => b.addEventListener('click', cjPartida));
+$('#cjAudio').addEventListener('click', decirCajas);
+$('#cjVolver').addEventListener('click', stopVoice);
+// toque: elegir un chocolate y luego un hueco; tocar un chocolate que ya está en una caja lo devuelve a la fila
+$('#cjCajas').addEventListener('click', e => {
+  const h = e.target.closest('.cj-hueco'); if(!h || h.firstChild || !CJ.sel) return;
+  cjPoner(CJ.sel, h);
+});
+function cjTocar(ch){
+  if(ch.parentElement.classList.contains('cj-hueco')){ cjCasa(ch); cjSeleccionar(null); cjRevisar(); return; }
+  cjSeleccionar(CJ.sel === ch ? null : ch);
+}
+$('#cjTira').parentElement.addEventListener('keydown', e => {   // teclado: Enter o espacio sobre un chocolate
+  const ch = e.target.closest('.choco'); if(!ch || CJ.listo || (e.key !== "Enter" && e.key !== " ")) return;
+  e.preventDefault(); cjTocar(ch);
+});
+// arrastre con mouse o dedo
+$('#cjTira').parentElement.addEventListener('pointerdown', e => {
+  const ch = e.target.closest('.choco'); if(!ch || e.button > 0 || CJ.listo) return;
+  e.preventDefault(); ch.focus({preventScroll:true});
+  const x0 = e.clientX, y0 = e.clientY, r0 = ch.getBoundingClientRect(), dx = x0 - r0.left, dy = y0 - r0.top;
+  let arrastrando = false;
+  const mover = ev => {
+    if(!arrastrando){
+      if(Math.hypot(ev.clientX - x0, ev.clientY - y0) < 6) return;
+      arrastrando = true; cjSeleccionar(null);
+      ch.style.width = ch.style.height = r0.width + 'px'; document.body.appendChild(ch); ch.classList.add('arrastre');
+    }
+    ch.style.left = ev.clientX - dx + 'px'; ch.style.top = ev.clientY - dy + 'px';
+  };
+  const soltar = ev => {
+    removeEventListener('pointermove', mover); removeEventListener('pointerup', soltar); removeEventListener('pointercancel', soltar);
+    if(!arrastrando) return cjTocar(ch);
+    ch.classList.remove('arrastre'); ch.style.left = ch.style.top = ch.style.width = ch.style.height = '';
+    // el hueco libre más cercano al centro del chocolate (con margen generoso)
+    const cx = ev.clientX - dx + r0.width/2, cy = ev.clientY - dy + r0.height/2;
+    let mejor = null, dist = Infinity;
+    $$('.cj-hueco').forEach(h => {
+      if(h.firstChild) return;
+      const r = h.getBoundingClientRect(), d = Math.hypot(cx - (r.left + r.width/2), cy - (r.top + r.height/2));
+      if(d < r.width*.9 && d < dist){ mejor = h; dist = d; }
+    });
+    if(mejor) cjPoner(ch, mejor); else { cjCasa(ch); cjRevisar(); }
+  };
+  addEventListener('pointermove', mover); addEventListener('pointerup', soltar); addEventListener('pointercancel', soltar);
+});
 
 /* ---------- Modo claro / oscuro ---------- */
 function setTheme(t){
