@@ -149,6 +149,26 @@ button{font:inherit;color:inherit;cursor:pointer}
 .caja.llena{animation:cajaOk .5s ease}
 @keyframes cajaOk{50%{transform:scale(1.06)}}
 
+/* ---------- Decena: esferas y cajas de 10 lugares ---------- */
+.btn-dec{background:#0e7490;color:#fff;grid-column:1/-1}
+.dc-card{--s:clamp(34px,6.4vw,54px);--g:calc(var(--s)*.12)}
+.dc-paleta{align-items:center;gap:14px}
+.dc-esfera{width:var(--s);height:var(--s);border-radius:50%;border:0;padding:0;margin:0;display:block;flex:0 0 auto;
+  cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;box-shadow:inset -3px -5px 8px rgba(0,0,0,.3),0 3px 4px rgba(0,0,0,.3)}
+.dc-esfera.am{background:radial-gradient(circle at 32% 28%,#fffbe0 0,#fde047 22%,#eab308 58%,#854d0e 100%)}
+.dc-esfera.ro{background:radial-gradient(circle at 32% 28%,#ffe4e4 0,#f87171 22%,#dc2626 58%,#7f1d1d 100%)}
+.dc-caja{display:grid;grid-template-columns:repeat(5,var(--s));gap:var(--g);padding:calc(var(--s)*.16);margin:0;border-radius:12px;flex:0 0 auto;
+  background:linear-gradient(180deg,#1e40af,#1e3a8a);border:3px solid #172554;box-shadow:inset 0 0 0 3px rgba(252,211,77,.8),0 5px 10px rgba(0,0,0,.3);
+  cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none}
+.dc-hueco{width:var(--s);height:var(--s);border-radius:50%;background:#e0e7ff;box-shadow:inset 0 3px 7px rgba(15,23,42,.6);position:relative}
+.dc-hueco > .dc-esfera{position:absolute;left:0;top:0}
+.dc-hueco.meta{box-shadow:inset 0 3px 7px rgba(15,23,42,.6),0 0 0 3px #fcd34d}
+.dc-mesa > .dc-esfera,.dc-mesa > .dc-caja{position:absolute;margin:0}
+.dc-mesa > .dc-caja{z-index:1}.dc-mesa > .dc-esfera{z-index:2}
+.dc-esfera.sel{outline:4px solid #2563eb;outline-offset:2px}
+.dc-esfera:focus-visible,.dc-caja:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
+.dc-arrastre{position:fixed !important;z-index:80 !important;cursor:grabbing;margin:0;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}
+
 /* ---------- Juego: burbujas en el océano ---------- */
 .screen.oc{padding:0;align-items:stretch;justify-content:stretch}
 .oc-mar{position:relative;flex:1;min-height:100vh;min-height:100dvh;overflow:hidden;touch-action:manipulation;
@@ -393,6 +413,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <div class="home-buttons">
       <button class="btn btn-teo" data-go="a2Actividad">🚢 Actividad sugerida</button>
       <button class="btn btn-cajas" data-go="cajas">📦 Cajas</button>
+      <button class="btn btn-dec" data-go="decena">🔟 Decena</button>
     </div>
     <div class="volver"><button class="btn btn-ghost" data-go="inicio">🏠 Regresar al menú</button></div>
   </div>
@@ -427,6 +448,26 @@ button{font:inherit;color:inherit;cursor:pointer}
       <div id="cjFb" aria-live="polite"></div>
       <div class="cj-cajas" id="cjCajas" role="group" aria-label="Cajas"></div>
       <div class="cj-sig"><button class="btn btn-otro" id="cjSig" hidden>➡ Siguientes cajas</button><button class="btn btn-ghost" id="cjReg" data-go="apr2" hidden>⬅ Volver al aprendizaje 2</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 2 · DECENA (pizarra del docente) ============ -->
+<section class="screen pza" id="decena" aria-labelledby="tDecena">
+  <div class="pza-wrap">
+    <div class="pza-bar">
+      <button class="btn btn-ghost" data-go="apr2">⬅ Volver al aprendizaje 2</button>
+      <button class="btn btn-indic" data-indic="decena" aria-pressed="false">🔊 Indicaciones</button>
+      <button class="btn btn-ghost" id="dcLimpiar">🧽 Limpiar pizarra</button>
+    </div>
+    <div class="pza-card dc-card">
+      <h2 id="tDecena">🔟 Decena</h2>
+      <div class="paleta dc-paleta" id="dcPaleta" role="group" aria-label="Esferas y caja para colocar en la pizarra">
+        <button class="dc-esfera am" data-nuevo="am" aria-label="Esfera amarilla"></button>
+        <button class="dc-esfera ro" data-nuevo="ro" aria-label="Esfera roja"></button>
+        <button class="dc-caja" data-nuevo="caja" aria-label="Caja de 10 lugares"></button>
+      </div>
+      <div class="mesa dc-mesa" id="dcMesa" aria-label="Pizarra"></div>
     </div>
   </div>
 </section>
@@ -578,6 +619,7 @@ $('#btnBorrar').addEventListener('click', mesaPizarra.limpiar);
 
 // Indicaciones: el primer toque las lee; otro toque detiene el audio
 const INDICACIONES = {
+  decena: 'Toca una esfera amarilla, una esfera roja o la caja, y aparecerá en la pizarra blanca. Puedes sacar tantas esferas y cajas como quieras. Arrastra las esferas con el mouse hasta los lugares de la caja; cada caja tiene diez lugares. Si sacas un objeto fuera de la pizarra, regresa a su lugar. El botón Limpiar pizarra quita todo.',
   pizarra: 'Toca un objeto con el mouse y aparecerá en la pizarra blanca. Ahí podrás moverlo con el mouse. Puedes usar cada objeto las veces que quieras. Si sacas un objeto fuera de la pizarra, desaparece. Al tocar el botón Borrar pizarra, se quitan todos los objetos.',
   practica: 'Observa el número del cuadro. Toca los objetos con el mouse para colocarlos en la mesa blanca, hasta tener esa cantidad. Puedes moverlos con el mouse. Si sacas un objeto fuera de la mesa, desaparece. Cuando termines, toca el botón Comprobar. El botón Otro número te da un número nuevo.'
 };
@@ -852,6 +894,97 @@ $('#cjTira').parentElement.addEventListener('pointerdown', e => {
   };
   addEventListener('pointermove', mover); addEventListener('pointerup', soltar); addEventListener('pointercancel', soltar);
 });
+
+/* ---------- Decena: pizarra con esferas amarillas y rojas y cajas de 10 lugares ---------- */
+// Tocar (o arrastrar) un objeto de la paleta lo pone en la pizarra; se pueden sacar todos los que se quiera.
+// Las esferas calzan en los lugares de las cajas; al mover una caja, sus esferas se mueven con ella.
+// Si un objeto se suelta fuera de la pizarra, regresa a donde estaba (uno nuevo regresa a la paleta).
+const dcMesa = $('#dcMesa');
+let dcSel = null;
+function dcNuevo(t){
+  const b = document.createElement('button');
+  if(t === 'caja'){
+    b.className = 'dc-caja'; b.setAttribute('aria-label', 'Caja de 10 lugares');
+    b.innerHTML = Array.from({length:10}, () => '<span class="dc-hueco"></span>').join('');
+  }else{ b.className = 'dc-esfera ' + t; b.setAttribute('aria-label', t === 'am' ? 'Esfera amarilla' : 'Esfera roja'); }
+  return b;
+}
+$('#dcPaleta .dc-caja').innerHTML = dcNuevo('caja').innerHTML;
+function dcEnMesa(el, x, y){   // (x, y) relativo a la pizarra; siempre dentro de ella
+  dcMesa.appendChild(el);
+  const W = dcMesa.clientWidth, H = dcMesa.clientHeight;
+  el.style.left = Math.max(0, Math.min(W - el.offsetWidth, x)) + 'px';
+  el.style.top = Math.max(0, Math.min(H - el.offsetHeight, y)) + 'px';
+}
+function dcLibre(el){   // primer lugar libre de la pizarra para un objeto nuevo
+  dcMesa.appendChild(el); el.style.left = el.style.top = '0px';
+  const w = el.offsetWidth, h = el.offsetHeight, W = dcMesa.clientWidth, H = dcMesa.clientHeight, m = 8;
+  const otros = [...dcMesa.children].filter(o => o !== el).map(o => ({x:o.offsetLeft, y:o.offsetTop, w:o.offsetWidth, h:o.offsetHeight}));
+  for(let y = m; y + h <= H; y += 12) for(let x = m; x + w <= W; x += 12)
+    if(!otros.some(o => x < o.x + o.w + 4 && x + w + 4 > o.x && y < o.y + o.h + 4 && y + h + 4 > o.y)) return dcEnMesa(el, x, y);
+  dcEnMesa(el, m + Math.random()*(W - w - 2*m), m + Math.random()*(H - h - 2*m));
+}
+function dcSeleccionar(e){
+  dcSel = e; $$('#dcMesa .dc-esfera').forEach(o => o.classList.toggle('sel', o === e));
+  $$('#dcMesa .dc-hueco').forEach(h => h.classList.toggle('meta', !!e && !h.firstChild));
+}
+function dcHuecoCerca(cx, cy){   // lugar vacío de una caja más cercano al centro de la esfera
+  let mejor = null, dist = Infinity;
+  $$('#dcMesa .dc-hueco').forEach(h => {
+    if(h.firstChild) return;
+    const r = h.getBoundingClientRect(), d = Math.hypot(cx - (r.left + r.width/2), cy - (r.top + r.height/2));
+    if(d < r.width*.75 && d < dist){ mejor = h; dist = d; }
+  });
+  return mejor;
+}
+function dcTocar(el){
+  if(el.dataset.nuevo){ const n = dcNuevo(el.dataset.nuevo); dcLibre(n); pop(); return; }
+  if(el.classList.contains('dc-esfera')) dcSeleccionar(dcSel === el ? null : el);
+}
+// tocar un lugar vacío de una caja con una esfera elegida la coloca ahí
+dcMesa.addEventListener('click', e => {
+  const h = e.target.closest('.dc-hueco');
+  if(h && !h.firstChild && dcSel){ h.appendChild(dcSel); dcSel.style.left = dcSel.style.top = ''; pop(); dcSeleccionar(null); }
+});
+$('#decena').addEventListener('keydown', e => {
+  const el = e.target.closest('.dc-esfera,.dc-caja'); if(!el || (e.key !== 'Enter' && e.key !== ' ')) return;
+  e.preventDefault(); dcTocar(el);
+});
+$('#decena').addEventListener('pointerdown', e => {
+  let el = e.target.closest('.dc-esfera,.dc-caja'); if(!el || e.button > 0) return;
+  // al tocar un lugar de una caja (sin esfera) se arrastra la caja completa
+  e.preventDefault();
+  const x0 = e.clientX, y0 = e.clientY, r0 = el.getBoundingClientRect(), dx = x0 - r0.left, dy = y0 - r0.top;
+  const origen = {padre: el.parentElement, left: el.style.left, top: el.style.top, siguiente: el.nextSibling};
+  let arrastrando = false;
+  const mover = ev => {
+    if(!arrastrando){
+      if(Math.hypot(ev.clientX - x0, ev.clientY - y0) < 6) return;
+      arrastrando = true; dcSeleccionar(null);
+      if(el.dataset.nuevo) el = dcNuevo(el.dataset.nuevo);   // de la paleta sale una copia
+      document.body.appendChild(el); el.classList.add('dc-arrastre');
+    }
+    el.style.left = ev.clientX - dx + 'px'; el.style.top = ev.clientY - dy + 'px';
+  };
+  const soltar = ev => {
+    removeEventListener('pointermove', mover); removeEventListener('pointerup', soltar); removeEventListener('pointercancel', soltar);
+    if(!arrastrando) return dcTocar(el);
+    el.classList.remove('dc-arrastre');
+    const w = r0.width, h = r0.height, cx = ev.clientX - dx + w/2, cy = ev.clientY - dy + h/2;
+    const R = dcMesa.getBoundingClientRect();
+    const hueco = el.classList.contains('dc-esfera') ? dcHuecoCerca(cx, cy) : null;
+    if(hueco){ hueco.appendChild(el); el.style.left = el.style.top = ''; pop(); return; }
+    if(cx > R.left && cx < R.right && cy > R.top && cy < R.bottom){
+      dcEnMesa(el, ev.clientX - dx - R.left - dcMesa.clientLeft, ev.clientY - dy - R.top - dcMesa.clientTop); return;
+    }
+    // fuera de la pizarra: regresa a donde estaba (si era nuevo, a la paleta)
+    if(origen.padre === $('#dcPaleta')){ el.remove(); return; }
+    origen.padre.insertBefore(el, origen.siguiente && origen.siguiente.parentElement === origen.padre ? origen.siguiente : null);
+    el.style.left = origen.left; el.style.top = origen.top;
+  };
+  addEventListener('pointermove', mover); addEventListener('pointerup', soltar); addEventListener('pointercancel', soltar);
+});
+$('#dcLimpiar').addEventListener('click', () => { dcMesa.innerHTML = ''; dcSel = null; });
 
 /* ---------- Modo claro / oscuro ---------- */
 function setTheme(t){
