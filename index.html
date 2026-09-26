@@ -109,6 +109,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   box-shadow:inset -3px -4px 6px rgba(0,0,0,.35),0 3px 4px rgba(0,0,0,.3)}
 .ficha.tarjeta{width:46px;height:58px;border-radius:10px;background:linear-gradient(145deg,#312e81,#6d28d9 55%,#a21caf);border:2px solid #fcd34d;
   font:700 1.7rem Arial,Helvetica,sans-serif;box-shadow:0 3px 6px rgba(49,46,129,.4)}
+.ficha.tarjeta.signo{background:linear-gradient(145deg,#c2410c,#f97316 60%,#fb923c);font-size:2rem}
 .ficha.tarjeta-pal{width:auto;min-width:74px;height:46px;padding:0 10px;border-radius:10px;background:linear-gradient(180deg,#fffdf5,#fde7b0);color:#1e3a8a;
   border:2px solid #b7791f;text-shadow:none;font:700 1.15rem Georgia,"Times New Roman",serif;box-shadow:0 3px 6px rgba(0,0,0,.25)}
 .ficha.obj.foto,.ficha.obj.foto img{width:58px;height:58px}
@@ -931,7 +932,24 @@ button{font:inherit;color:inherit;cursor:pointer}
     <span class="kicker">Aprendizaje esperado 3</span>
     <h2 id="ta3Descomp">🧩 Descomposición aditiva</h2>
     <div class="teo-box"><p>Por ejemplo:</p><p class="dc-ej" aria-label="5 es igual a 4 más 1">5 = 4 + 1</p></div>
+    <div class="home-buttons uno"><button class="btn btn-pza" data-go="a3DcPizarra">🧑‍🏫 Pizarra</button></div>
     <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 3 · DESCOMPOSICIÓN · PIZARRA ============ -->
+<section class="screen pza" id="a3DcPizarra" aria-labelledby="ta3DcPizarra">
+  <div class="pza-wrap">
+    <div class="pza-bar">
+      <button class="btn btn-ghost" data-go="a3Descomp">⬅ Volver a Descomposición</button>
+      <button class="btn btn-indic" data-indic="descomp" aria-pressed="false">🔊 Indicaciones</button>
+      <button class="btn btn-ghost" id="dpBorrar">🧽 Borrar pizarra</button>
+    </div>
+    <div class="pza-card">
+      <h2 id="ta3DcPizarra">🧑‍🏫 Pizarra</h2>
+      <div class="paleta" id="dpPaleta" role="group" aria-label="Tarjetas con números y signos para colocar en la pizarra"></div>
+      <div class="mesa" id="dpMesa" aria-label="Pizarra"></div>
+    </div>
   </div>
 </section>
 
@@ -1028,7 +1046,10 @@ const FOTO = {
 };
 // Tarjetas de la pizarra de Numeral: «n5» = tarjeta con el número 5; «p5» = tarjeta con la palabra «cinco»
 const PAL_NUM = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
-const fichaHTML = t => /^n\d$/.test(t) ? `<button class="ficha tarjeta" data-t="${t}" aria-label="Tarjeta con el número ${t[1]}">${t[1]}</button>`
+// Tarjetas de signos (pizarra de Descomposición)
+const SIGNOS = {mas:['+', 'Signo más'], menos:['−', 'Signo menos'], igual:['=', 'Signo igual']};
+const fichaHTML = t => SIGNOS[t] ? `<button class="ficha tarjeta signo" data-t="${t}" aria-label="${SIGNOS[t][1]}">${SIGNOS[t][0]}</button>`
+  : /^n\d$/.test(t) ? `<button class="ficha tarjeta" data-t="${t}" aria-label="Tarjeta con el número ${t[1]}">${t[1]}</button>`
   : /^p\d$/.test(t) ? `<button class="ficha tarjeta-pal" data-t="${t}" aria-label="Tarjeta con la palabra ${PAL_NUM[t[1]]}">${PAL_NUM[t[1]]}</button>`
   : FOTO[t] ? `<button class="ficha obj foto" data-t="${t}" aria-label="${FOTO[t][0]}" title="${FOTO[t][0]}">${FOTO[t][1]}</button>`
   : SIMB[t] ? `<button class="ficha obj" data-t="${t}" aria-label="${SIMB[t][0]}" title="${SIMB[t][0]}">${SIMB[t][1]}</button>`
@@ -1094,10 +1115,14 @@ $('#grBorrar').addEventListener('click', mesaGrafica.limpiar);
 // Pizarra de Numeral: tarjetas con los números del 1 al 9, con las palabras uno … nueve, y fotos de naranja y lápiz
 const mesaNumeral = crearMesa($('#nmMesa'), $('#nmPaleta'), [...Array.from({length:9}, (_,i) => 'n' + (i+1)), ...Array.from({length:9}, (_,i) => 'p' + (i+1)), 'fnaranja', 'flapiz']);
 $('#nmBorrar').addEventListener('click', mesaNumeral.limpiar);
+// Pizarra de Descomposición: tarjetas con los números del 1 al 9 y los signos +, − e =
+const mesaDescomp = crearMesa($('#dpMesa'), $('#dpPaleta'), [...Array.from({length:9}, (_,i) => 'n' + (i+1)), 'mas', 'menos', 'igual']);
+$('#dpBorrar').addEventListener('click', mesaDescomp.limpiar);
 
 // Indicaciones: el primer toque las lee; otro toque detiene el audio
 const INDICACIONES = {
   decena: 'Toca una esfera amarilla, una esfera roja o la caja, y aparecerá en la pizarra blanca. Puedes sacar tantas esferas y cajas como quieras. Arrastra las esferas con el mouse hasta los lugares de la caja; cada caja tiene diez lugares. Si sacas un objeto fuera de la pizarra, desaparece. El botón Limpiar pizarra quita todo.',
+  descomp: 'Toca una tarjeta con un número o con un signo, más, menos o igual, y aparecerá en la pizarra blanca. Ahí podrás moverla con el mouse para armar, por ejemplo, cinco igual a cuatro más uno. Puedes usar cada tarjeta las veces que quieras. Si sacas una tarjeta fuera de la pizarra, desaparece. El botón Borrar pizarra quita todo.',
   numeral: 'Toca una tarjeta con un número o con una palabra, o la naranja o el lápiz, con el mouse, y aparecerá en la pizarra blanca. Ahí podrás moverlo con el mouse. Puedes usar cada número las veces que quieras. Si sacas un número fuera de la pizarra, desaparece. El botón Borrar pizarra quita todo.',
   grafica: 'Toca un número o un símbolo con el mouse y aparecerá en la pizarra blanca: la estrella amarilla, el punto rojo, la barrita, el triángulo verde o el cuadrado negro. Ahí podrás moverlo con el mouse. Puedes usar cada uno las veces que quieras. Si sacas uno fuera de la pizarra, desaparece. El botón Borrar pizarra quita todo.',
   pizarra: 'Toca un objeto con el mouse y aparecerá en la pizarra blanca. Ahí podrás moverlo con el mouse. Puedes usar cada objeto las veces que quieras. Si sacas un objeto fuera de la pizarra, desaparece. Al tocar el botón Borrar pizarra, se quitan todos los objetos.',
