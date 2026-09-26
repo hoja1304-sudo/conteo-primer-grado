@@ -121,6 +121,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 /* ---------- Agrupar en cajas ---------- */
 .btn-cajas{background:#b45309;color:#fff}
+.btn-r1{background:#16a34a}.btn-r2{background:#7c3aed}.btn-r3{background:#e0562b}.btn-r4{background:#0e7490}.btn-r5{background:#be185d;grid-column:1/-1}
 .cj-card{--ch:clamp(28px,calc((100vw - 96px)/9.7),68px);--gap:calc(var(--ch)*.16);text-align:center}
 .cj-ronda{display:inline-grid;place-items:center;min-height:48px;padding:0 16px;border-radius:14px;background:var(--panel);border:2px solid var(--line);font-weight:900;box-shadow:var(--shadow)}
 .cj-letrero{display:inline-block;margin:2px auto 12px;padding:.3em 1.1em;border-radius:18px;color:#fff;font-weight:900;letter-spacing:.02em;
@@ -478,9 +479,62 @@ button{font:inherit;color:inherit;cursor:pointer}
     <span class="kicker">Aprendizaje esperado 3</span>
     <h2 id="tApr3">Identificar y aportar ejemplos de representaciones distintas de un número</h2>
     <p class="grade">Matemática · Primer año</p>
-    <button class="btn btn-ghost" data-go="inicio">🏠 Regresar al menú</button>
+    <div class="home-buttons">
+      <button class="btn btn-r1" data-go="a3Grafica">📊 Gráfica</button>
+      <button class="btn btn-r2" data-go="a3Numeral">🔢 Numeral</button>
+      <button class="btn btn-r3" data-go="a3Concreta">🧸 Concreta</button>
+      <button class="btn btn-r4" data-go="a3Literal">🔤 Literal</button>
+      <button class="btn btn-r5" data-go="a3Descomp">🧩 Descomposición</button>
+    </div>
+    <div class="volver"><button class="btn btn-ghost" data-go="inicio">🏠 Regresar al menú</button></div>
   </div>
 </section>
+
+<!-- ============ APRENDIZAJE 3 · GRÁFICA ============ -->
+<section class="screen" id="a3Grafica" aria-labelledby="ta3Grafica">
+  <div class="home-card">
+    <span class="kicker">Aprendizaje esperado 3</span>
+    <h2 id="ta3Grafica">📊 Gráfica</h2>
+    <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 3 · NUMERAL ============ -->
+<section class="screen" id="a3Numeral" aria-labelledby="ta3Numeral">
+  <div class="home-card">
+    <span class="kicker">Aprendizaje esperado 3</span>
+    <h2 id="ta3Numeral">🔢 Numeral</h2>
+    <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 3 · CONCRETA ============ -->
+<section class="screen" id="a3Concreta" aria-labelledby="ta3Concreta">
+  <div class="home-card">
+    <span class="kicker">Aprendizaje esperado 3</span>
+    <h2 id="ta3Concreta">🧸 Concreta</h2>
+    <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 3 · LITERAL ============ -->
+<section class="screen" id="a3Literal" aria-labelledby="ta3Literal">
+  <div class="home-card">
+    <span class="kicker">Aprendizaje esperado 3</span>
+    <h2 id="ta3Literal">🔤 Literal</h2>
+    <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 3 · DESCOMPOSICIÓN ============ -->
+<section class="screen" id="a3Descomp" aria-labelledby="ta3Descomp">
+  <div class="home-card">
+    <span class="kicker">Aprendizaje esperado 3</span>
+    <h2 id="ta3Descomp">🧩 Descomposición</h2>
+    <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
+  </div>
+</section>
+
 
 <script>
 (() => {
