@@ -407,7 +407,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <div class="pza-bar">
       <button class="btn btn-ghost" data-go="apr2" id="cjVolver">⬅ Volver al aprendizaje 2</button>
       <button class="btn btn-indic" id="cjAudio">🔊 Escuchar</button>
-      <span class="cj-ronda" id="cjRonda" title="Ronda">🎯 1/4</span>
+      <span class="cj-ronda" id="cjRonda" title="Ronda">🎯 1/6</span>
     </div>
     <div class="pza-card cj-card">
       <h2 id="tCajas">📦 Agrupar en cajas</h2>
@@ -415,7 +415,7 @@ button{font:inherit;color:inherit;cursor:pointer}
       <div class="cj-tira" id="cjTira" role="group" aria-label="Chocolates"></div>
       <div id="cjFb" aria-live="polite"></div>
       <div class="cj-cajas" id="cjCajas" role="group" aria-label="Cajas"></div>
-      <div class="cj-sig"><button class="btn btn-otro" id="cjSig" hidden>➡ Siguientes cajas</button></div>
+      <div class="cj-sig"><button class="btn btn-otro" id="cjSig" hidden>➡ Siguientes cajas</button><button class="btn btn-ghost" id="cjReg" data-go="apr2" hidden>⬅ Regresar al aprendizaje 2</button></div>
     </div>
   </div>
 </section>
@@ -760,13 +760,13 @@ $('#btnAcsJuego').addEventListener('click', () => { show('a1Juego'); OC.max = fa
 
 
 /* ---------- Aprendizaje 2: agrupar 9 chocolates en cajas ---------- */
-// Rondas (en desorden): 3 cajas de 3, 4 cajas de 2, 2 cajas de 4 y 1 caja de 9.
+// Ciclo fijo: 2 cajas de 4, 3 de 3, 4 de 2, 9 de 1, 1 caja de 7 y 1 caja de 6; al final, ¿repetir o regresar?
 // Los chocolates se arrastran a los huecos (o se toca un chocolate y luego un hueco).
 // Sacar un chocolate de su hueco (arrastrarlo fuera o tocarlo) lo devuelve a la fila.
 const CHOCO = `<svg viewBox="0 0 60 60"><rect x="2" y="2" width="56" height="56" rx="9" fill="#5a2d12"/><g fill="#7b3f1d" stroke="#4a220c" stroke-width="1.5"><rect x="7" y="7" width="21" height="21" rx="4"/><rect x="32" y="7" width="21" height="21" rx="4"/><rect x="7" y="32" width="21" height="21" rx="4"/><rect x="32" y="32" width="21" height="21" rx="4"/></g><g stroke="#a86437" stroke-width="2.2" stroke-linecap="round" fill="none"><path d="M10 24 V11 H24"/><path d="M35 24 V11 H49"/><path d="M10 49 V36 H24"/><path d="M35 49 V36 H49"/></g></svg>`;
-const CJ_RONDAS = [{c:3, k:3}, {c:4, k:2}, {c:2, k:4}, {c:1, k:9}];
+const CJ_RONDAS = [{c:2, k:4}, {c:3, k:3}, {c:4, k:2}, {c:9, k:1}, {c:1, k:7}, {c:1, k:6}];
 const CJ = {orden:[], ronda:0, sel:null, listo:false};
-const CJ_COLS = {2:2, 3:3, 4:2, 9:3};
+const CJ_COLS = {1:1, 2:2, 3:3, 4:2, 6:3, 7:4, 9:3};
 function decirCajas(){ stopVoice(); if(!('speechSynthesis' in window)) return; loadVoices(); const tok = speechTok; setTimeout(() => { if(tok === speechTok) speakNow('Llena las cajas', 0, () => {}); }, 80); }
 function cjSeleccionar(ch){ CJ.sel = ch; $$('.choco').forEach(c => c.classList.toggle('sel', c === ch)); $$('.cj-hueco').forEach(h => h.classList.toggle('meta', !!ch && !h.firstChild)); }
 function cjCasa(ch){ $('#cjTira').children[+ch.dataset.i].appendChild(ch); }
@@ -776,19 +776,20 @@ function cjRevisar(){
   if(CJ.listo || $$('.cj-hueco').some(h => !h.firstChild)) return;
   CJ.listo = true;
   const r = CJ_RONDAS[CJ.orden[CJ.ronda]], sobra = 9 - r.c*r.k;
-  const grupos = r.c === 1 ? `1 grupo de ${r.k} chocolates` : `${r.c} grupos de ${r.k} chocolates`;
+  const choc = n => n === 1 ? 'chocolate' : 'chocolates';
+  const grupos = `${r.c} ${r.c === 1 ? 'grupo' : 'grupos'} de ${r.k} ${choc(r.k)}`;
   const fin = CJ.ronda === CJ.orden.length - 1;
   setTimeout(() => {
     chime(); fireworks();
-    $('#cjFb').innerHTML = `<div class="fb ok"><img src="${PULGAR}" alt="">¡Muy bien! Formaste ${grupos}${sobra ? ` y sobró ${sobra} chocolate` : ''}.${fin ? '<br>¡Llenaste todas las cajas!' : ''}</div>`;
-    $('#cjSig').textContent = fin ? '🔁 Jugar otra vez' : '➡ Siguientes cajas'; $('#cjSig').hidden = false;
+    $('#cjFb').innerHTML = `<div class="fb ok"><img src="${PULGAR}" alt="">¡Muy bien! Formaste ${grupos}${sobra ? ` y ${sobra === 1 ? 'sobró' : 'sobraron'} ${sobra} ${choc(sobra)}` : ''}.${fin ? '<br>¡Completaste todas las cajas! ¿Deseas repetir o regresar al aprendizaje 2?' : ''}</div>`;
+    $('#cjSig').textContent = fin ? '🔁 Repetir' : '➡ Siguientes cajas'; $('#cjSig').hidden = false; $('#cjReg').hidden = !fin;
   }, 250);
 }
 function cjRonda(){
   const r = CJ_RONDAS[CJ.orden[CJ.ronda]];
   CJ.listo = false; CJ.sel = null;
   $('#cjRonda').textContent = `🎯 ${CJ.ronda + 1}/${CJ.orden.length}`;
-  $('#cjFb').innerHTML = ''; $('#cjSig').hidden = true;
+  $('#cjFb').innerHTML = ''; $('#cjSig').hidden = true; $('#cjReg').hidden = true;
   $('#cjTira').innerHTML = Array.from({length:9}, (_, i) =>
     `<div class="cj-cel"><button class="choco" data-i="${i}" aria-label="Chocolate ${i + 1}">${CHOCO}</button></div>`).join('');
   $('#cjCajas').innerHTML = Array.from({length:r.c}, (_, i) =>
@@ -796,11 +797,11 @@ function cjRonda(){
     Array.from({length:r.k}, (_, j) => `<button class="cj-hueco" aria-label="Espacio ${j + 1} de la caja ${i + 1}"></button>`).join('') + '</div>').join('');
   decirCajas();
 }
-function cjPartida(){ CJ.orden = [0,1,2,3].sort(() => Math.random() - .5); CJ.ronda = 0; cjRonda(); }
+function cjPartida(){ CJ.orden = CJ_RONDAS.map((_, i) => i); CJ.ronda = 0; cjRonda(); }
 $('#cjSig').addEventListener('click', () => { if(CJ.ronda >= CJ.orden.length - 1) cjPartida(); else { CJ.ronda++; cjRonda(); } });
 $$('[data-go="cajas"]').forEach(b => b.addEventListener('click', cjPartida));
 $('#cjAudio').addEventListener('click', decirCajas);
-$('#cjVolver').addEventListener('click', stopVoice);
+$('#cjVolver').addEventListener('click', stopVoice); $('#cjReg').addEventListener('click', stopVoice);
 // toque: elegir un chocolate y luego un hueco; tocar un chocolate que ya está en una caja lo devuelve a la fila
 $('#cjCajas').addEventListener('click', e => {
   const h = e.target.closest('.cj-hueco'); if(!h || h.firstChild || !CJ.sel) return;
