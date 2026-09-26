@@ -1413,7 +1413,7 @@ function czItem(){
     $('#czOpc').innerHTML = `<div class="cz-opciones">` + ops.map((k, j) => `<button class="cz-op" data-k="${k}" aria-label="Opción ${'ABC'[j]}: ${k} ${nombre(k)}">
       <span class="cz-letra">${'ABC'[j]}</span><span class="cz-objs">${obj[1].repeat(k)}</span></button>`).join('') + `</div>`;
   }else{
-    $('#czPreg').textContent = 'Mira el siguiente grupo';
+    $('#czPreg').textContent = 'Mira la siguiente imagen';
     const txt = k => tipo === 'palabra' ? mayus(UNID[k]) : `<span class="cz-num">${k}</span>`;
     $('#czOpc').innerHTML = `<div class="cz-grupo" role="img" aria-label="${n} ${nombre(n)}"><div class="cz-objs">${obj[1].repeat(n)}</div></div>
       <p class="cz-cuantos">¿Cuántos hay?</p>
