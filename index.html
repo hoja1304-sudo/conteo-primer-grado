@@ -414,7 +414,7 @@ button{font:inherit;color:inherit;cursor:pointer}
       <div class="cj-tira" id="cjTira" role="group" aria-label="Chocolates"></div>
       <div id="cjFb" aria-live="polite"></div>
       <div class="cj-cajas" id="cjCajas" role="group" aria-label="Cajas"></div>
-      <div class="cj-sig"><button class="btn btn-otro" id="cjSig" hidden>➡ Siguientes cajas</button><button class="btn btn-ghost" id="cjReg" data-go="apr2" hidden>⬅ Regresar al aprendizaje 2</button></div>
+      <div class="cj-sig"><button class="btn btn-otro" id="cjSig" hidden>➡ Siguientes cajas</button><button class="btn btn-ghost" id="cjReg" data-go="apr2" hidden>⬅ Volver al aprendizaje 2</button></div>
     </div>
   </div>
 </section>
@@ -773,14 +773,11 @@ function cjRevisar(){
   $$('.caja').forEach(c => c.classList.toggle('llena', [...c.children].every(h => h.firstChild)));
   if(CJ.listo || $$('.cj-hueco').some(h => !h.firstChild)) return;
   CJ.listo = true;
-  const r = CJ_RONDAS[CJ.orden[CJ.ronda]], sobra = 9 - r.c*r.k;
-  const choc = n => n === 1 ? 'chocolate' : 'chocolates';
-  const grupos = `${r.c} ${r.c === 1 ? 'grupo' : 'grupos'} de ${r.k} ${choc(r.k)}`;
   const fin = CJ.ronda === CJ.orden.length - 1;
   setTimeout(() => {
     chime(); fireworks();
-    $('#cjFb').innerHTML = `<div class="fb ok"><img src="${PULGAR}" alt="">¡Muy bien! Formaste ${grupos}${sobra ? ` y ${sobra === 1 ? 'sobró' : 'sobraron'} ${sobra} ${choc(sobra)}` : ''}.${fin ? '<br>¡Completaste todas las cajas! ¿Deseas repetir o regresar al aprendizaje 2?' : ''}</div>`;
-    $('#cjSig').textContent = fin ? '🔁 Repetir' : '➡ Siguientes cajas'; $('#cjSig').hidden = false; $('#cjReg').hidden = !fin;
+    $('#cjFb').innerHTML = `<div class="fb ok"><img src="${PULGAR}" alt="">¡Muy bien!</div>`;
+    $('#cjSig').textContent = fin ? '🔁 Reiniciar' : '➡ Siguientes cajas'; $('#cjSig').hidden = false; $('#cjReg').hidden = !fin;
   }, 250);
 }
 function cjRonda(){
