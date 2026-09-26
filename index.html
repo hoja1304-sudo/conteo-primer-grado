@@ -121,7 +121,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 /* ---------- Agrupar en cajas ---------- */
 .btn-cajas{background:#b45309;color:#fff}
-.btn-r1{background:#16a34a}.btn-r2{background:#7c3aed}.btn-r3{background:#e0562b}.btn-r4{background:#0e7490}.btn-r5{background:#be185d;grid-column:1/-1}
+.btn-r1{background:#16a34a}.btn-r2{background:#7c3aed}.btn-r3{background:#e0562b}.btn-r4{background:#0e7490}.btn-r5{background:#be185d}.btn-r6{background:#a16207}
+#apr3 .home-buttons .btn{padding:.8em .4em;font-size:clamp(1rem,2.6vw,1.5rem);overflow-wrap:anywhere}
 .cj-card{--ch:clamp(28px,calc((100vw - 96px)/9.7),68px);--gap:calc(var(--ch)*.16);text-align:center}
 .cj-ronda{display:inline-grid;place-items:center;min-height:48px;padding:0 16px;border-radius:14px;background:var(--panel);border:2px solid var(--line);font-weight:900;box-shadow:var(--shadow)}
 .cj-letrero{display:inline-block;margin:2px auto 12px;padding:.3em 1.1em;border-radius:18px;color:#fff;font-weight:900;letter-spacing:.02em;
@@ -506,6 +507,7 @@ button{font:inherit;color:inherit;cursor:pointer}
       <button class="btn btn-r2" data-go="a3Numeral">🔢 Numeral</button>
       <button class="btn btn-r3" data-go="a3Concreta">🧸 Concreta</button>
       <button class="btn btn-r4" data-go="a3Literal">🔤 Literal</button>
+      <button class="btn btn-r6" data-go="a3Verbal">🗣️ Verbal</button>
       <button class="btn btn-r5" data-go="a3Descomp">🧩 Descomposición</button>
     </div>
     <div class="volver"><button class="btn btn-ghost" data-go="inicio">🏠 Regresar al menú</button></div>
@@ -592,6 +594,15 @@ button{font:inherit;color:inherit;cursor:pointer}
   <div class="home-card">
     <span class="kicker">Aprendizaje esperado 3</span>
     <h2 id="ta3Literal">🔤 Literal</h2>
+    <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 3 · VERBAL ============ -->
+<section class="screen" id="a3Verbal" aria-labelledby="ta3Verbal">
+  <div class="home-card">
+    <span class="kicker">Aprendizaje esperado 3</span>
+    <h2 id="ta3Verbal">🗣️ Verbal</h2>
     <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
   </div>
 </section>
