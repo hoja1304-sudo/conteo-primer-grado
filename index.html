@@ -136,12 +136,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 .choco:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
 .choco.sel{outline:4px solid #2563eb;outline-offset:2px;transform:translateY(-4px)}
 .choco.arrastre{position:fixed;z-index:60;cursor:grabbing;transform:scale(1.1);filter:drop-shadow(0 6px 6px rgba(0,0,0,.4))}
-.cj-cajas{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:calc(var(--ch)*.5) calc(var(--ch)*.4);padding-top:calc(var(--ch)*.55)}
-.caja{position:relative;display:grid;gap:var(--gap);padding:calc(var(--ch)*.2);border-radius:8px;
-  background:linear-gradient(180deg,#d9a066,#c4874a);border:3px solid #8a5a2b;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08),0 5px 10px rgba(80,40,10,.3)}
-.caja::before,.caja::after{content:"";position:absolute;top:calc(var(--ch)*-.5);height:calc(var(--ch)*.5);width:48%;background:#e0ad74;border:3px solid #8a5a2b;border-bottom:0}
-.caja::before{left:-3px;transform-origin:bottom left;transform:skewX(-18deg);border-radius:6px 2px 0 0}
-.caja::after{right:-3px;transform-origin:bottom right;transform:skewX(18deg);border-radius:2px 6px 0 0}
+.cj-cajas{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:calc(var(--ch)*.4);padding-top:4px}
+/* caja rectangular de chocolates: los espacios en una sola fila */
+.caja{position:relative;display:grid;gap:var(--gap);padding:calc(var(--ch)*.2) calc(var(--ch)*.24);border-radius:10px;
+  background:linear-gradient(180deg,#d9a066,#c4874a);border:3px solid #7a4a22;
+  box-shadow:inset 0 0 0 3px rgba(252,211,77,.75),inset 0 -6px 0 rgba(0,0,0,.08),0 5px 10px rgba(80,40,10,.3)}
 .cj-hueco{border:0;padding:0;background:#f3e2c4;box-shadow:inset 0 3px 7px rgba(90,45,18,.55);cursor:pointer}
 .cj-hueco.meta{box-shadow:inset 0 3px 7px rgba(90,45,18,.55),0 0 0 3px #fcd34d}
 .cj-hueco:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
@@ -766,7 +765,6 @@ $('#btnAcsJuego').addEventListener('click', () => { show('a1Juego'); OC.max = fa
 const CHOCO = `<svg viewBox="0 0 60 60"><rect x="2" y="2" width="56" height="56" rx="9" fill="#5a2d12"/><g fill="#7b3f1d" stroke="#4a220c" stroke-width="1.5"><rect x="7" y="7" width="21" height="21" rx="4"/><rect x="32" y="7" width="21" height="21" rx="4"/><rect x="7" y="32" width="21" height="21" rx="4"/><rect x="32" y="32" width="21" height="21" rx="4"/></g><g stroke="#a86437" stroke-width="2.2" stroke-linecap="round" fill="none"><path d="M10 24 V11 H24"/><path d="M35 24 V11 H49"/><path d="M10 49 V36 H24"/><path d="M35 49 V36 H49"/></g></svg>`;
 const CJ_RONDAS = [{c:2, k:4}, {c:3, k:3}, {c:4, k:2}, {c:9, k:1}, {c:1, k:7}, {c:1, k:6}];
 const CJ = {orden:[], ronda:0, sel:null, listo:false};
-const CJ_COLS = {1:1, 2:2, 3:3, 4:2, 6:3, 7:4, 9:3};
 function decirCajas(){ stopVoice(); if(!('speechSynthesis' in window)) return; loadVoices(); const tok = speechTok; setTimeout(() => { if(tok === speechTok) speakNow('Llena las cajas', 0, () => {}); }, 80); }
 function cjSeleccionar(ch){ CJ.sel = ch; $$('.choco').forEach(c => c.classList.toggle('sel', c === ch)); $$('.cj-hueco').forEach(h => h.classList.toggle('meta', !!ch && !h.firstChild)); }
 function cjCasa(ch){ $('#cjTira').children[+ch.dataset.i].appendChild(ch); }
@@ -793,7 +791,7 @@ function cjRonda(){
   $('#cjTira').innerHTML = Array.from({length:9}, (_, i) =>
     `<div class="cj-cel"><button class="choco" data-i="${i}" aria-label="Chocolate ${i + 1}">${CHOCO}</button></div>`).join('');
   $('#cjCajas').innerHTML = Array.from({length:r.c}, (_, i) =>
-    `<div class="caja" role="group" aria-label="Caja ${i + 1} de ${r.k} espacios" style="grid-template-columns:repeat(${CJ_COLS[r.k]},var(--ch))">` +
+    `<div class="caja" role="group" aria-label="Caja ${i + 1} de ${r.k} espacios" style="grid-template-columns:repeat(${r.k},var(--ch))">` +
     Array.from({length:r.k}, (_, j) => `<button class="cj-hueco" aria-label="Espacio ${j + 1} de la caja ${i + 1}"></button>`).join('') + '</div>').join('');
   decirCajas();
 }
