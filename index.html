@@ -673,7 +673,24 @@ button{font:inherit;color:inherit;cursor:pointer}
     <span class="kicker">Aprendizaje esperado 3</span>
     <h2 id="ta3Numeral">🔢 Numeral</h2>
     <div class="teo-box"><p>Es la representación numérica.</p><div class="nm-fila" aria-label="1, 2, 3, 4, 5, 6, 7, 8, 9"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div></div>
+    <div class="home-buttons uno"><button class="btn btn-pza" data-go="a3NmPizarra">🧑‍🏫 Pizarra</button></div>
     <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 3 · NUMERAL · PIZARRA ============ -->
+<section class="screen pza" id="a3NmPizarra" aria-labelledby="ta3NmPizarra">
+  <div class="pza-wrap">
+    <div class="pza-bar">
+      <button class="btn btn-ghost" data-go="a3Numeral">⬅ Volver a Numeral</button>
+      <button class="btn btn-indic" data-indic="numeral" aria-pressed="false">🔊 Indicaciones</button>
+      <button class="btn btn-ghost" id="nmBorrar">🧽 Borrar pizarra</button>
+    </div>
+    <div class="pza-card">
+      <h2 id="ta3NmPizarra">🧑‍🏫 Pizarra</h2>
+      <div class="paleta" id="nmPaleta" role="group" aria-label="Números para colocar en la pizarra"></div>
+      <div class="mesa" id="nmMesa" aria-label="Pizarra"></div>
+    </div>
   </div>
 </section>
 
@@ -1055,10 +1072,14 @@ $('#btnBorrar').addEventListener('click', mesaPizarra.limpiar);
 // Pizarra de Gráfica: números del 1 al 9 y símbolos (estrella, punto, barrita, triángulo y cuadrado)
 const mesaGrafica = crearMesa($('#grMesa'), $('#grPaleta'), [...Array.from({length:9}, (_,i) => String(i+1)), ...Object.keys(SIMB)]);
 $('#grBorrar').addEventListener('click', mesaGrafica.limpiar);
+// Pizarra de Numeral: los números del 1 al 9
+const mesaNumeral = crearMesa($('#nmMesa'), $('#nmPaleta'), Array.from({length:9}, (_,i) => String(i+1)));
+$('#nmBorrar').addEventListener('click', mesaNumeral.limpiar);
 
 // Indicaciones: el primer toque las lee; otro toque detiene el audio
 const INDICACIONES = {
   decena: 'Toca una esfera amarilla, una esfera roja o la caja, y aparecerá en la pizarra blanca. Puedes sacar tantas esferas y cajas como quieras. Arrastra las esferas con el mouse hasta los lugares de la caja; cada caja tiene diez lugares. Si sacas un objeto fuera de la pizarra, desaparece. El botón Limpiar pizarra quita todo.',
+  numeral: 'Toca un número con el mouse y aparecerá en la pizarra blanca. Ahí podrás moverlo con el mouse. Puedes usar cada número las veces que quieras. Si sacas un número fuera de la pizarra, desaparece. El botón Borrar pizarra quita todo.',
   grafica: 'Toca un número o un símbolo con el mouse y aparecerá en la pizarra blanca: la estrella amarilla, el punto rojo, la barrita, el triángulo verde o el cuadrado negro. Ahí podrás moverlo con el mouse. Puedes usar cada uno las veces que quieras. Si sacas uno fuera de la pizarra, desaparece. El botón Borrar pizarra quita todo.',
   pizarra: 'Toca un objeto con el mouse y aparecerá en la pizarra blanca. Ahí podrás moverlo con el mouse. Puedes usar cada objeto las veces que quieras. Si sacas un objeto fuera de la pizarra, desaparece. Al tocar el botón Borrar pizarra, se quitan todos los objetos.',
   practica: 'Observa el número del cuadro. Toca los objetos con el mouse para colocarlos en la mesa blanca, hasta tener esa cantidad. Puedes moverlos con el mouse. Si sacas un objeto fuera de la mesa, desaparece. Cuando termines, toca el botón Comprobar. El botón Otro número te da un número nuevo.'
