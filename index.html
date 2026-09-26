@@ -107,6 +107,10 @@ button{font:inherit;color:inherit;cursor:pointer}
   font:700 1.3rem Arial,Helvetica,sans-serif;text-shadow:0 1px 2px rgba(0,0,0,.55);
   cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;
   box-shadow:inset -3px -4px 6px rgba(0,0,0,.35),0 3px 4px rgba(0,0,0,.3)}
+.ficha.tarjeta{width:46px;height:58px;border-radius:10px;background:linear-gradient(145deg,#312e81,#6d28d9 55%,#a21caf);border:2px solid #fcd34d;
+  font:700 1.7rem Arial,Helvetica,sans-serif;box-shadow:0 3px 6px rgba(49,46,129,.4)}
+.ficha.tarjeta-pal{width:auto;min-width:74px;height:46px;padding:0 10px;border-radius:10px;background:linear-gradient(180deg,#fffdf5,#fde7b0);color:#1e3a8a;
+  border:2px solid #b7791f;text-shadow:none;font:700 1.15rem Georgia,"Times New Roman",serif;box-shadow:0 3px 6px rgba(0,0,0,.25)}
 .ficha.bolita{width:44px;height:44px;background:radial-gradient(circle at 32% 28%,#fff1e0 0,#fdba74 20%,#f97316 55%,#9a3412 100%)}
 .ficha.obj{width:52px;height:52px;border-radius:12px;background:none;box-shadow:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
 .ficha.obj svg,.ficha.obj img{width:100%;height:100%;display:block;pointer-events:none;object-fit:contain}
@@ -1012,7 +1016,11 @@ const SIMB = {
   triangulo: ['Triángulo verde', '<svg viewBox="0 0 60 60"><path d="M30 7L55 52H5z" fill="#16a34a" stroke="#14532d" stroke-width="2.4" stroke-linejoin="round"/></svg>'],
   cuadrado:  ['Cuadrado negro', '<svg viewBox="0 0 60 60"><rect x="11" y="11" width="38" height="38" rx="3" fill="#111827" stroke="#000" stroke-width="2"/></svg>']
 };
-const fichaHTML = t => SIMB[t] ? `<button class="ficha obj" data-t="${t}" aria-label="${SIMB[t][0]}" title="${SIMB[t][0]}">${SIMB[t][1]}</button>`
+// Tarjetas de la pizarra de Numeral: «n5» = tarjeta con el número 5; «p5» = tarjeta con la palabra «cinco»
+const PAL_NUM = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
+const fichaHTML = t => /^n\d$/.test(t) ? `<button class="ficha tarjeta" data-t="${t}" aria-label="Tarjeta con el número ${t[1]}">${t[1]}</button>`
+  : /^p\d$/.test(t) ? `<button class="ficha tarjeta-pal" data-t="${t}" aria-label="Tarjeta con la palabra ${PAL_NUM[t[1]]}">${PAL_NUM[t[1]]}</button>`
+  : SIMB[t] ? `<button class="ficha obj" data-t="${t}" aria-label="${SIMB[t][0]}" title="${SIMB[t][0]}">${SIMB[t][1]}</button>`
   : /^\d$/.test(t) ? `<button class="ficha" data-t="${t}" aria-label="Número ${t}">${t}</button>`
   : t === 'o' ? `<button class="ficha bolita" data-t="o" aria-label="Bolita anaranjada"></button>`
   : `<button class="ficha obj" data-t="${t}" aria-label="${OBJ[t][0]}" title="${OBJ[t][0]}">${OBJ[t][1]}</button>`;
@@ -1072,14 +1080,14 @@ $('#btnBorrar').addEventListener('click', mesaPizarra.limpiar);
 // Pizarra de Gráfica: números del 1 al 9 y símbolos (estrella, punto, barrita, triángulo y cuadrado)
 const mesaGrafica = crearMesa($('#grMesa'), $('#grPaleta'), [...Array.from({length:9}, (_,i) => String(i+1)), ...Object.keys(SIMB)]);
 $('#grBorrar').addEventListener('click', mesaGrafica.limpiar);
-// Pizarra de Numeral: los números del 1 al 9
-const mesaNumeral = crearMesa($('#nmMesa'), $('#nmPaleta'), Array.from({length:9}, (_,i) => String(i+1)));
+// Pizarra de Numeral: tarjetas con los números del 1 al 9 y con las palabras uno … nueve
+const mesaNumeral = crearMesa($('#nmMesa'), $('#nmPaleta'), [...Array.from({length:9}, (_,i) => 'n' + (i+1)), ...Array.from({length:9}, (_,i) => 'p' + (i+1))]);
 $('#nmBorrar').addEventListener('click', mesaNumeral.limpiar);
 
 // Indicaciones: el primer toque las lee; otro toque detiene el audio
 const INDICACIONES = {
   decena: 'Toca una esfera amarilla, una esfera roja o la caja, y aparecerá en la pizarra blanca. Puedes sacar tantas esferas y cajas como quieras. Arrastra las esferas con el mouse hasta los lugares de la caja; cada caja tiene diez lugares. Si sacas un objeto fuera de la pizarra, desaparece. El botón Limpiar pizarra quita todo.',
-  numeral: 'Toca un número con el mouse y aparecerá en la pizarra blanca. Ahí podrás moverlo con el mouse. Puedes usar cada número las veces que quieras. Si sacas un número fuera de la pizarra, desaparece. El botón Borrar pizarra quita todo.',
+  numeral: 'Toca una tarjeta con un número o con una palabra, con el mouse, y aparecerá en la pizarra blanca. Ahí podrás moverlo con el mouse. Puedes usar cada número las veces que quieras. Si sacas un número fuera de la pizarra, desaparece. El botón Borrar pizarra quita todo.',
   grafica: 'Toca un número o un símbolo con el mouse y aparecerá en la pizarra blanca: la estrella amarilla, el punto rojo, la barrita, el triángulo verde o el cuadrado negro. Ahí podrás moverlo con el mouse. Puedes usar cada uno las veces que quieras. Si sacas uno fuera de la pizarra, desaparece. El botón Borrar pizarra quita todo.',
   pizarra: 'Toca un objeto con el mouse y aparecerá en la pizarra blanca. Ahí podrás moverlo con el mouse. Puedes usar cada objeto las veces que quieras. Si sacas un objeto fuera de la pizarra, desaparece. Al tocar el botón Borrar pizarra, se quitan todos los objetos.',
   practica: 'Observa el número del cuadro. Toca los objetos con el mouse para colocarlos en la mesa blanca, hasta tener esa cantidad. Puedes moverlos con el mouse. Si sacas un objeto fuera de la mesa, desaparece. Cuando termines, toca el botón Comprobar. El botón Otro número te da un número nuevo.'
