@@ -215,6 +215,39 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes vjMal{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 .vj-carta:disabled{cursor:default}
 
+/* ---------- Literal: el cocodrilo come al pez ---------- */
+.lg-lago{position:relative;flex:1;min-height:100vh;min-height:100dvh;overflow:hidden;touch-action:manipulation;
+  background:linear-gradient(180deg,#8fd3c7 0%,#3aa597 22%,#1f7a70 60%,#12524b 100%)}
+.lg-nenufar{position:absolute;width:clamp(60px,10vw,110px);aspect-ratio:1.5;border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse at 40% 40%,#86c56a,#3f8f2a 70%);clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 55%,50% 50%,0 45%);opacity:.85}
+.lg-nenufar.b{transform:scaleX(-1)}
+.lg-letrero{display:flex;flex-direction:column;align-items:center;pointer-events:none;
+  background:linear-gradient(160deg,#fffaf0,#fde7b0);color:#5b3410;border:4px solid #b7791f;border-radius:20px;padding:.3em 1.2em .35em;
+  box-shadow:0 0 0 4px rgba(255,255,255,.35),inset 0 0 0 2px #fff6dc,0 10px 24px rgba(0,0,0,.35)}
+.lg-come{font-weight:800;font-size:clamp(.95rem,2.8vw,1.25rem);letter-spacing:.08em;text-transform:uppercase;color:#92400e}
+.lg-palabra{font:700 clamp(1.8rem,6.4vw,3rem) Georgia,"Times New Roman",serif;color:#1e3a8a;line-height:1.1}
+.lg-palabra.nuevo{animation:numIn .45s cubic-bezier(.2,1.6,.4,1)}
+.lg-peces{position:absolute;inset:0}
+.lg-pez{position:absolute;left:0;top:0;width:clamp(78px,13vw,118px);aspect-ratio:100/64;border:0;padding:0;background:none;cursor:pointer;
+  will-change:transform;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
+.lg-pez svg{width:100%;height:100%;display:block;pointer-events:none;transition:transform .25s}
+.lg-pez.der svg{transform:scaleX(-1)}
+.lg-num{position:absolute;left:46%;top:52%;transform:translate(-50%,-50%);font:900 clamp(1.15rem,2.6vw,1.6rem) Arial,Helvetica,sans-serif;color:#fff;pointer-events:none;
+  text-shadow:0 0 3px #0b1f3a,0 0 3px #0b1f3a,0 2px 3px #0b1f3a}
+.lg-pez.der .lg-num{left:54%}
+.lg-pez:focus-visible{outline:4px solid #fcd34d;outline-offset:2px;border-radius:40%}
+.lg-pez.mal svg{animation:lgMal .5s}
+@keyframes lgMal{20%,60%{transform:rotate(-14deg)}40%,80%{transform:rotate(14deg)}}
+.lg-pez.der.mal svg{animation:lgMalD .5s}
+@keyframes lgMalD{0%,100%{transform:scaleX(-1)}20%,60%{transform:scaleX(-1) rotate(-14deg)}40%,80%{transform:scaleX(-1) rotate(14deg)}}
+.lg-pez.comido{transition:transform .45s ease-in,opacity .45s ease-in;pointer-events:none}
+.lg-croco{position:absolute;left:2%;bottom:max(4px,env(safe-area-inset-bottom));width:clamp(190px,34vw,330px);z-index:4;pointer-events:none;
+  animation:lgFlota 3s ease-in-out infinite}
+.lg-croco svg{width:100%;height:auto;display:block;overflow:visible}
+@keyframes lgFlota{50%{transform:translateY(5px)}}
+.lg-mandibula{transform-box:view-box;transform-origin:60px 72px;transition:transform .18s}
+.lg-croco.abre .lg-mandibula{transform:rotate(24deg)}
+
 /* ---------- Juego: burbujas en el océano ---------- */
 .screen.oc{padding:0;align-items:stretch;justify-content:stretch}
 .oc-mar{position:relative;flex:1;min-height:100vh;min-height:100dvh;overflow:hidden;touch-action:manipulation;
@@ -617,6 +650,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <span class="kicker">Aprendizaje esperado 3</span>
     <h2 id="ta3Literal">🔤 Literal</h2>
     <div class="teo-box"><p>La forma como se escribe con palabras el número.</p></div>
+    <div class="home-buttons uno"><button class="btn btn-jue" data-go="a3LitFam">🎮 Juego</button></div>
     <div class="volver"><button class="btn btn-ghost" data-go="apr3">⬅ Volver al aprendizaje 3</button></div>
   </div>
 </section>
@@ -672,6 +706,102 @@ button{font:inherit;color:inherit;cursor:pointer}
         <div class="cj-sig">
           <button class="btn btn-otro" id="vjOtra">🔁 Repetir</button>
           <button class="btn btn-ghost" data-go="a3VerFam">👨‍👩‍👧 Elegir otra familia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 3 · LITERAL · FAMILIAS ============ -->
+<section class="screen" id="a3LitFam" aria-labelledby="ta3LitFam">
+  <div class="home-card">
+    <span class="kicker">Aprendizaje esperado 3 · Literal</span>
+    <h2 id="ta3LitFam">👨‍👩‍👧 Seleccionar familia</h2>
+    <p class="grade">Elige la familia de números para el juego.</p>
+    <div class="fams" role="group" aria-label="Familia de números">
+      <button class="famc faml" data-a="1" data-b="2" data-azar="0">De 1 a 2</button>
+      <button class="famc faml" data-a="1" data-b="3" data-azar="0">De 1 a 3</button>
+      <button class="famc faml" data-a="1" data-b="4" data-azar="0">De 1 a 4</button>
+      <button class="famc faml" data-a="1" data-b="5" data-azar="0">De 1 a 5</button>
+      <button class="famc faml" data-a="1" data-b="6" data-azar="0">De 1 a 6</button>
+      <button class="famc faml" data-a="1" data-b="7" data-azar="0">De 1 a 7</button>
+      <button class="famc faml" data-a="1" data-b="8" data-azar="0">De 1 a 8</button>
+      <button class="famc faml" data-a="1" data-b="9" data-azar="0">De 1 a 9</button>
+      <button class="famc faml" data-a="10" data-b="19" data-azar="0">De 10 a 19</button>
+      <button class="famc faml" data-a="20" data-b="29" data-azar="0">De 20 a 29</button>
+      <button class="famc faml" data-a="30" data-b="39" data-azar="0">De 30 a 39</button>
+      <button class="famc faml" data-a="40" data-b="49" data-azar="0">De 40 a 49</button>
+      <button class="famc faml" data-a="50" data-b="59" data-azar="0">De 50 a 59</button>
+      <button class="famc faml" data-a="60" data-b="69" data-azar="0">De 60 a 69</button>
+      <button class="famc faml" data-a="70" data-b="79" data-azar="0">De 70 a 79</button>
+      <button class="famc faml" data-a="80" data-b="89" data-azar="0">De 80 a 89</button>
+      <button class="famc faml" data-a="90" data-b="99" data-azar="0">De 90 a 99</button>
+      <button class="famc faml" data-a="1" data-b="50" data-azar="10">De 1 a 50</button>
+      <button class="famc faml" data-a="1" data-b="99" data-azar="10">De 1 a 99</button>
+    </div>
+    <div class="volver"><button class="btn btn-ghost" data-go="a3Literal">⬅ Volver a Literal</button></div>
+  </div>
+</section>
+
+<!-- ============ APRENDIZAJE 3 · LITERAL · JUEGO DEL COCODRILO ============ -->
+<section class="screen oc" id="a3LitJuego" aria-labelledby="tLg">
+  <div class="lg-lago" id="lgLago">
+    <svg class="oc-fondo" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+      <g fill="#fff" opacity=".06"><path d="M60 0 L130 0 L300 600 L190 600z"/><path d="M430 0 L470 0 L610 600 L530 600z"/><path d="M770 0 L840 0 L990 600 L870 600z"/></g>
+      <g fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="3" stroke-linecap="round">
+        <path d="M120 250 q30 -10 60 0 t60 0"/><path d="M620 180 q30 -10 60 0 t60 0"/><path d="M380 420 q30 -10 60 0 t60 0"/><path d="M780 470 q30 -10 60 0 t60 0"/>
+      </g>
+      <g fill="none" stroke-linecap="round" stroke-width="9">
+        <path d="M20 600 Q30 520 18 440" stroke="#3f7a2a"/><path d="M42 600 Q50 500 44 420" stroke="#4d8b31"/><path d="M64 600 Q60 530 72 470" stroke="#3f7a2a"/>
+        <path d="M940 600 Q930 520 946 450" stroke="#4d8b31"/><path d="M968 600 Q976 510 962 430" stroke="#3f7a2a"/>
+      </g>
+      <g fill="#7c4a1e"><ellipse cx="44" cy="416" rx="6" ry="18"/><ellipse cx="962" cy="426" rx="6" ry="18"/></g>
+    </svg>
+    <div class="lg-nenufar" style="left:6%;top:62%" aria-hidden="true"></div>
+    <div class="lg-nenufar b" style="right:7%;top:40%" aria-hidden="true"></div>
+    <div class="lg-peces" id="lgPeces"></div>
+    <div class="lg-croco" id="lgCroco"><svg viewBox="0 0 230 130" aria-hidden="true">
+        <ellipse cx="110" cy="118" rx="108" ry="10" fill="#0b3b3a" opacity=".35"/>
+        <path d="M6 112 Q14 72 52 62 L150 60 Q160 88 150 112 Z" fill="#3f7a2a"/>
+        <g fill="#2f5d1c"><path d="M20 84 l6 -10 l6 10z"/><path d="M34 76 l6 -10 l6 10z"/><path d="M48 70 l6 -10 l6 10z"/></g>
+        <path d="M60 70 L214 68 Q224 72 218 82 Q170 100 80 98 Q58 94 60 70Z" fill="#c2415d"/>
+        <g class="lg-mandibula">
+          <path d="M56 72 L216 70 Q226 74 219 84 Q170 102 78 100 Q54 96 56 72Z" fill="#6aa84f" stroke="#2f5d1c" stroke-width="2"/>
+          <g fill="#fff"><path d="M110 72 l4 -8 l4 8z"/><path d="M130 72 l4 -8 l4 8z"/><path d="M150 71 l4 -8 l4 8z"/><path d="M170 71 l4 -8 l4 8z"/><path d="M190 71 l4 -8 l4 8z"/></g>
+          <path d="M84 88 Q140 94 204 82" stroke="#4d8b31" stroke-width="2" fill="none"/>
+        </g>
+        <path d="M40 74 Q46 34 92 30 Q118 28 136 40 L208 46 Q224 48 222 60 L218 70 L56 74 Z" fill="#4d8b31" stroke="#2f5d1c" stroke-width="2"/>
+        <g fill="#fff"><path d="M100 73 l4 8 l4 -8z"/><path d="M120 73 l4 8 l4 -8z"/><path d="M140 72 l4 8 l4 -8z"/><path d="M160 72 l4 8 l4 -8z"/><path d="M180 72 l4 8 l4 -8z"/><path d="M200 71 l4 8 l4 -8z"/></g>
+        <g fill="#3f7a2a"><circle cx="150" cy="50" r="2.2"/><circle cx="170" cy="52" r="2.2"/><circle cx="190" cy="54" r="2.2"/><circle cx="128" cy="48" r="2.2"/></g>
+        <ellipse cx="212" cy="50" rx="3" ry="2" fill="#1f3d12"/>
+        <circle cx="74" cy="34" r="12" fill="#3f7a2a"/>
+        <circle cx="96" cy="30" r="15" fill="#4d8b31" stroke="#2f5d1c" stroke-width="2"/>
+        <circle cx="98" cy="28" r="10" fill="#fef9c3"/>
+        <ellipse cx="101" cy="28" rx="3.4" ry="7" fill="#111"/>
+        <circle cx="99" cy="24" r="2" fill="#fff"/>
+        <path d="M84 16 Q96 10 110 16" stroke="#2f5d1c" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <ellipse cx="70" cy="58" rx="7" ry="4" fill="#f9a8d4" opacity=".55"/>
+      </svg></div>
+    <div class="oc-cabeza">
+      <div class="oc-top">
+        <button class="btn btn-ghost" data-go="a3LitFam">⬅ Familias</button>
+        <button class="btn oc-audio" id="lgAudio" aria-pressed="true" title="Audio encendido / apagado">🔊 Audio</button>
+        <span class="oc-ronda" id="lgReloj" title="Tiempo">⏱ 00:00</span>
+        <span class="oc-ronda" id="lgPuntos" title="Puntos">⭐ 0</span>
+        <span class="oc-ronda" id="lgRonda" title="Ronda">🎯 1/10</span>
+      </div>
+      <h2 class="sr" id="tLg">Juego del cocodrilo: come al pez</h2>
+      <div class="lg-letrero" aria-live="polite"><span class="lg-come">Come al pez</span><span class="lg-palabra" id="lgPalabra">Diecinueve</span></div>
+    </div>
+    <div class="oc-msg" id="lgMsg" hidden></div>
+    <div class="oc-fin" id="lgFin" hidden>
+      <div class="oc-fin-card">
+        <img alt="" id="lgFinImg">
+        <h3>¡Felicidades!</h3>
+        <p id="lgFinTxt"></p>
+        <div class="oc-fin-btns">
+          <button class="btn btn-jue" id="lgOtra">🔁 Jugar otra vez</button>
+          <button class="btn btn-ghost" data-go="a3LitFam">👨‍👩‍👧 Elegir otra familia</button>
         </div>
       </div>
     </div>
@@ -1344,6 +1474,149 @@ $$('.famv').forEach(b => b.addEventListener('click', () => { try{ vjCtx(); vjCar
 $('#vjOir').addEventListener('click', vjOir);
 $('#vjOtra').addEventListener('click', vjPartida);
 $$('#a3VerJuego [data-go]').forEach(b => b.addEventListener('click', () => { clearTimeout(VJ.espera); VJ.n = 0; try{ if(vjFuente) vjFuente.stop(); }catch(e){} if(VJ.audio) VJ.audio.pause(); }));
+
+/* ---------- Aprendizaje 3 · Literal: el cocodrilo come al pez del número escrito con palabras ---------- */
+// Familias 1–2 … 1–9, decenas (10–19 … 90–99) y 1–50 / 1–99 (10 peces con números al azar).
+// Cada número sale una vez; también nadan peces sin número. Acierto: el cocodrilo se lo come,
+// +1 punto y fuegos artificiales; error: sonido gracioso. Reloj desde el inicio hasta terminar.
+const UNID = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
+const ESPEC = {10:'diez', 11:'once', 12:'doce', 13:'trece', 14:'catorce', 15:'quince', 16:'dieciséis', 17:'diecisiete', 18:'dieciocho', 19:'diecinueve',
+  20:'veinte', 22:'veintidós', 23:'veintitrés', 26:'veintiséis'};
+const DECS = ['', '', 'veinti', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
+function enPalabras(n){
+  if(n < 10) return UNID[n];
+  if(ESPEC[n]) return ESPEC[n];
+  const d = Math.floor(n/10), u = n % 10;
+  if(d === 2) return 'veinti' + UNID[u];
+  return u ? `${DECS[d]} y ${UNID[u]}` : DECS[d];
+}
+const mayus = t => t.charAt(0).toUpperCase() + t.slice(1);
+const LG_COLORES = [['#fde047','#f59e0b'],['#fdba74','#ea580c'],['#f9a8d4','#db2777'],['#c4b5fd','#7c3aed'],['#67e8f9','#0891b2'],
+  ['#86efac','#16a34a'],['#fca5a5','#dc2626'],['#fcd34d','#b45309'],['#93c5fd','#2563eb']];
+const LG = {a:1, b:9, azar:0, orden:[], i:0, n:0, puntos:0, peces:[], carriles:[], raf:0, last:0, t0:0, reloj:null, voz:true, estado:'fin', espera:null, gid:0};
+function lgPezHTML(num){
+  const [c1, c2] = LG_COLORES[Math.floor(Math.random()*LG_COLORES.length)], g = 'lgG' + (++LG.gid);
+  return `<svg viewBox="0 0 100 64"><defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>
+    <path d="M72 32 L98 9 Q91 32 98 55 Z" fill="${c2}" stroke="rgba(0,0,0,.25)" stroke-width="1.2"/>
+    <path d="M30 12 Q48 -2 64 13 Z" fill="${c2}"/>
+    <ellipse cx="42" cy="32" rx="36" ry="24" fill="url(#${g})" stroke="rgba(0,0,0,.25)" stroke-width="1.5"/>
+    <path d="M28 16 Q23 32 28 48" stroke="rgba(0,0,0,.22)" stroke-width="1.6" fill="none"/>
+    <path d="M48 46 Q58 58 66 46" fill="${c2}"/>
+    <circle cx="17" cy="26" r="6" fill="#fff"/><circle cx="15.5" cy="26" r="3.3" fill="#111"/><circle cx="14.5" cy="24.8" r="1.1" fill="#fff"/>
+    <path d="M7 38 Q11 41 15 38" stroke="rgba(0,0,0,.45)" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>` +
+    (num ? `<span class="lg-num">${num}</span>` : '');
+}
+function lgDecir(){
+  stopVoice();
+  if(!LG.voz || !LG.n || !('speechSynthesis' in window)) return;
+  loadVoices(); const tok = speechTok, t = enPalabras(LG.n);
+  setTimeout(() => { if(tok === speechTok) speakNow(t, 0, () => {}); }, 80);
+}
+function lgPintarAudio(){ const b = $('#lgAudio'); b.setAttribute('aria-pressed', LG.voz); b.textContent = LG.voz ? '🔊 Audio' : '🔇 Audio'; }
+$('#lgAudio').addEventListener('click', () => { LG.voz = !LG.voz; lgPintarAudio(); if(LG.voz) lgDecir(); else stopVoice(); });
+const lgGracioso = () => { tone(520, 380, .18, .18); setTimeout(() => tone(380, 300, .2, .18), 190); setTimeout(() => tone(300, 110, .55, .2), 400); };
+const lgMordida = () => { tone(160, 60, .12, .25); setTimeout(() => tone(140, 50, .14, .25), 140); };
+function lgReloj(){
+  const seg = Math.floor((Date.now() - LG.t0)/1000);
+  $('#lgReloj').textContent = `⏱ ${String(Math.floor(seg/60)).padStart(2,'0')}:${String(seg%60).padStart(2,'0')}`;
+}
+function lgZona(){   // zona donde nadan los peces: debajo del letrero y encima del cocodrilo
+  const lago = $('#lgLago'), cab = $('#a3LitJuego .oc-cabeza');
+  const top = cab.offsetTop + cab.offsetHeight + 8, W = lago.clientWidth, H = lago.clientHeight;
+  return {W, top, bottom: Math.max(top + 120, H - $('#lgCroco').offsetHeight*.9)};
+}
+// Los peces nadan por carriles horizontales; en cada carril van a la misma velocidad y bien
+// separados, y al salir por un lado entran por el otro: así nunca se tapan unos a otros.
+function lgCrearPeces(){
+  const cont = $('#lgPeces'); cont.innerHTML = ''; LG.peces = [];
+  const sinNumero = LG.orden.length <= 3 ? 2 : 3;
+  const nums = [...LG.orden, ...Array(sinNumero).fill(0)].sort(() => Math.random() - .5);
+  nums.forEach(num => {
+    const el = document.createElement('button');
+    el.className = 'lg-pez'; el.innerHTML = lgPezHTML(num);
+    el.setAttribute('aria-label', num ? `Pez con el número ${num}` : 'Pez sin número');
+    cont.appendChild(el);
+    const pez = {el, num, w: el.offsetWidth || 90, h: el.offsetHeight || 58, amp: 3 + Math.random()*4, fase: Math.random()*6.28, vel: 1 + Math.random(), comido:false};
+    el.addEventListener('click', () => lgTocar(pez));
+    LG.peces.push(pez);
+  });
+  // carriles: tantos como quepan (máximo la mitad de los peces, redondeando hacia arriba)
+  const z = lgZona(), h = LG.peces[0].h;
+  const carriles = Math.max(1, Math.min(Math.ceil(nums.length/2), Math.floor((z.bottom - z.top)/(h + 10))));
+  const porCarril = Math.ceil(nums.length/carriles);
+  LG.carriles = Array.from({length:carriles}, (_, c) => ({vx: (c % 2 ? -1 : 1)*(24 + Math.random()*22), off: Math.random()}));
+  LG.peces.forEach((p, i) => { p.carril = i % carriles; p.puesto = Math.floor(i/carriles); p.porCarril = porCarril; });
+}
+function lgPaso(t){
+  if(!$('#a3LitJuego').classList.contains('active')){ LG.raf = 0; return; }
+  const z = lgZona(), n = LG.carriles.length, alto = (z.bottom - z.top)/n, seg = t/1000;
+  LG.peces.forEach(p => {
+    if(p.comido) return;
+    p.w = p.el.offsetWidth; p.h = p.el.offsetHeight;
+    const c = LG.carriles[p.carril], tramo = z.W + p.w;
+    const base = (c.off + p.puesto/p.porCarril)*tramo + c.vx*seg;
+    const x = ((base % tramo) + tramo) % tramo - p.w;
+    const y = z.top + (p.carril + .5)*alto - p.h/2 + Math.sin(seg*p.vel + p.fase)*p.amp;
+    p.x = x; p.el.classList.toggle('der', c.vx > 0);
+    p.el.style.transform = `translate(${x}px,${y}px)`;
+  });
+  LG.raf = requestAnimationFrame(lgPaso);
+}
+function lgMsg(ok){
+  const m = $('#lgMsg');
+  m.className = 'oc-msg ' + (ok ? 'ok' : 'bad');
+  m.innerHTML = ok ? `<img src="${PULGAR}" alt="">¡Muy bien!` : `<img src="${SORPRESA}" alt="">¡Inténtalo de nuevo!`;
+  m.hidden = false; clearTimeout(LG.msgT); LG.msgT = setTimeout(() => m.hidden = true, ok ? 1200 : 1100);
+}
+function lgTocar(p){
+  if(LG.estado !== 'jugar' || p.comido) return;
+  if(p.num === LG.n){
+    LG.estado = 'come'; LG.puntos++; $('#lgPuntos').textContent = `⭐ ${LG.puntos}`;
+    // el pez va hacia la boca del cocodrilo, que se abre y lo muerde
+    const croco = $('#lgCroco'), rc = croco.getBoundingClientRect(), rl = $('#lgLago').getBoundingClientRect();
+    const bx = rc.left - rl.left + rc.width*.78 - p.w/2, by = rc.top - rl.top + rc.height*.52 - p.h/2;
+    p.comido = true; croco.classList.add('abre');
+    p.el.classList.add('comido');
+    requestAnimationFrame(() => { p.el.style.transform = `translate(${bx}px,${by}px) scale(.25)`; p.el.style.opacity = '0'; });
+    setTimeout(() => { croco.classList.remove('abre'); lgMordida(); }, 430);
+    setTimeout(() => { chime(); fireworks(); lgMsg(true); }, 520);
+    LG.espera = setTimeout(() => { p.el.remove(); if(++LG.i < LG.orden.length) lgRonda(); else lgFinal(); }, 1700);
+  }else{
+    lgGracioso(); lgMsg(false);
+    p.el.classList.remove('mal'); void p.el.offsetWidth; p.el.classList.add('mal');
+  }
+}
+function lgRonda(){
+  LG.n = LG.orden[LG.i]; LG.estado = 'jugar';
+  $('#lgRonda').textContent = `🎯 ${LG.i + 1}/${LG.orden.length}`;
+  const pal = $('#lgPalabra'); pal.textContent = mayus(enPalabras(LG.n));
+  pal.classList.remove('nuevo'); void pal.offsetWidth; pal.classList.add('nuevo');
+  lgDecir();
+}
+function lgPartida(){
+  clearTimeout(LG.espera); $('#lgFin').hidden = true; $('#lgMsg').hidden = true;
+  const todos = Array.from({length: LG.b - LG.a + 1}, (_, i) => LG.a + i).sort(() => Math.random() - .5);
+  LG.orden = LG.azar ? todos.slice(0, LG.azar) : todos;
+  LG.i = 0; LG.puntos = 0; $('#lgPuntos').textContent = '⭐ 0'; lgPintarAudio();
+  lgCrearPeces();
+  LG.t0 = Date.now(); lgReloj(); clearInterval(LG.reloj); LG.reloj = setInterval(lgReloj, 1000);
+  lgRonda();
+  if(!LG.raf){ LG.last = 0; LG.raf = requestAnimationFrame(lgPaso); }
+}
+function lgFinal(){
+  LG.estado = 'fin'; LG.n = 0; clearInterval(LG.reloj); lgReloj(); stopVoice();
+  $('#lgFinImg').src = PULGAR;
+  $('#lgFinTxt').innerHTML = `Completaste la familia de ${LG.a} a ${LG.b}.<br>⏱ Tiempo: ${$('#lgReloj').textContent.replace('⏱ ', '')} · ⭐ Puntos: ${LG.puntos}`;
+  $('#lgFin').hidden = false; chime(); fireworks();
+}
+$$('.faml').forEach(b => b.addEventListener('click', () => {
+  LG.a = +b.dataset.a; LG.b = +b.dataset.b; LG.azar = +b.dataset.azar;
+  show('a3LitJuego'); requestAnimationFrame(lgPartida);
+}));
+$('#lgOtra').addEventListener('click', lgPartida);
+$$('#a3LitJuego [data-go]').forEach(b => b.addEventListener('click', () => {
+  clearTimeout(LG.espera); clearInterval(LG.reloj); LG.estado = 'fin'; LG.n = 0; stopVoice();
+}));
 
 /* ---------- Modo claro / oscuro ---------- */
 function setTheme(t){
