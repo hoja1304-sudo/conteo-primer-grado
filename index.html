@@ -250,6 +250,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 .lg-pez.der.mal svg{animation:lgMalD .5s}
 @keyframes lgMalD{0%,100%{transform:scaleX(-1)}20%,60%{transform:scaleX(-1) rotate(-14deg)}40%,80%{transform:scaleX(-1) rotate(14deg)}}
 .lg-pez.oculto{pointer-events:none}
+/* aletas que se mueven como al nadar */
+.pz-cola,.pz-dorsal,.pz-pectoral{transform-box:view-box}
+.pz-cola{transform-origin:72px 32px;animation:pzCola var(--ritmo,.45s) ease-in-out infinite alternate}
+.pz-dorsal{transform-origin:46px 14px;animation:pzDorsal calc(var(--ritmo,.45s)*2) ease-in-out infinite alternate}
+.pz-pectoral{transform-origin:42px 41px;animation:pzPect calc(var(--ritmo,.45s)*1.3) ease-in-out infinite alternate}
+@keyframes pzCola{from{transform:rotate(-15deg) scaleY(.92)}to{transform:rotate(15deg) scaleY(1.05)}}
+@keyframes pzDorsal{from{transform:skewX(-10deg)}to{transform:skewX(10deg)}}
+@keyframes pzPect{from{transform:rotate(-14deg)}to{transform:rotate(22deg)}}
 .lg-pez.comido{transition:transform .5s ease-out,opacity .5s ease-out;pointer-events:none}
 .pc-mundo{position:absolute;left:0;top:0;bottom:0;width:300%}
 /* arrecife: imagen de Alberto (fondo negro quitado; la cueva queda oscura y tapa a los peces escondidos) */
@@ -1509,14 +1517,23 @@ const mayus = t => t.charAt(0).toUpperCase() + t.slice(1);
 const LG_COLORES = [['#fde047','#f59e0b'],['#fdba74','#ea580c'],['#f9a8d4','#db2777'],['#c4b5fd','#7c3aed'],['#67e8f9','#0891b2'],
   ['#86efac','#16a34a'],['#fca5a5','#dc2626'],['#fcd34d','#b45309'],['#93c5fd','#2563eb']];
 const LG = {a:1, b:9, azar:0, orden:[], i:0, n:0, puntos:0, peces:[], carriles:[], raf:0, last:0, t0:0, reloj:null, voz:true, estado:'fin', espera:null, gid:0};
+// Escamas: arcos pequeños dentro del cuerpo (recortados a la forma del pez)
+const LG_ESCAMAS = "M26 14 q3.5 4.5 7 0 M33 14 q3.5 4.5 7 0 M40 14 q3.5 4.5 7 0 M47 14 q3.5 4.5 7 0 M54 14 q3.5 4.5 7 0 M61 14 q3.5 4.5 7 0 M68 14 q3.5 4.5 7 0 M75 14 q3.5 4.5 7 0 M29.5 21 q3.5 4.5 7 0 M36.5 21 q3.5 4.5 7 0 M43.5 21 q3.5 4.5 7 0 M50.5 21 q3.5 4.5 7 0 M57.5 21 q3.5 4.5 7 0 M64.5 21 q3.5 4.5 7 0 M71.5 21 q3.5 4.5 7 0 M26 28 q3.5 4.5 7 0 M33 28 q3.5 4.5 7 0 M40 28 q3.5 4.5 7 0 M47 28 q3.5 4.5 7 0 M54 28 q3.5 4.5 7 0 M61 28 q3.5 4.5 7 0 M68 28 q3.5 4.5 7 0 M75 28 q3.5 4.5 7 0 M29.5 35 q3.5 4.5 7 0 M36.5 35 q3.5 4.5 7 0 M43.5 35 q3.5 4.5 7 0 M50.5 35 q3.5 4.5 7 0 M57.5 35 q3.5 4.5 7 0 M64.5 35 q3.5 4.5 7 0 M71.5 35 q3.5 4.5 7 0 M26 42 q3.5 4.5 7 0 M33 42 q3.5 4.5 7 0 M40 42 q3.5 4.5 7 0 M47 42 q3.5 4.5 7 0 M54 42 q3.5 4.5 7 0 M61 42 q3.5 4.5 7 0 M68 42 q3.5 4.5 7 0 M75 42 q3.5 4.5 7 0 M29.5 49 q3.5 4.5 7 0 M36.5 49 q3.5 4.5 7 0 M43.5 49 q3.5 4.5 7 0 M50.5 49 q3.5 4.5 7 0 M57.5 49 q3.5 4.5 7 0 M64.5 49 q3.5 4.5 7 0 M71.5 49 q3.5 4.5 7 0";
 function lgPezHTML(num){
   const [c1, c2] = LG_COLORES[Math.floor(Math.random()*LG_COLORES.length)], g = 'lgG' + (++LG.gid);
-  return `<svg viewBox="0 0 100 64"><defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>
-    <path d="M72 32 L98 9 Q91 32 98 55 Z" fill="${c2}" stroke="rgba(0,0,0,.25)" stroke-width="1.2"/>
-    <path d="M30 12 Q48 -2 64 13 Z" fill="${c2}"/>
+  const ritmo = (.38 + Math.random()*.22).toFixed(2);   // cada pez mueve las aletas a su propio ritmo
+  return `<svg viewBox="0 0 100 64" style="--ritmo:${ritmo}s"><defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient>
+    <clipPath id="${g}c"><ellipse cx="42" cy="32" rx="35" ry="23"/></clipPath></defs>
+    <g class="pz-cola"><path d="M70 32 L98 8 Q90 32 98 56 Z" fill="${c2}" stroke="rgba(0,0,0,.25)" stroke-width="1.2"/>
+      <path d="M76 30 L94 15 M76 32 L92 32 M76 34 L94 49" stroke="rgba(255,255,255,.35)" stroke-width="1.3" fill="none"/></g>
+    <g class="pz-dorsal"><path d="M24 14 Q40 -10 68 13 Z" fill="${c2}" stroke="rgba(0,0,0,.2)" stroke-width="1"/>
+      <path d="M34 7 L37 12 M43 3 L45 10 M52 3 L53 10 M60 7 L60 12" stroke="rgba(255,255,255,.4)" stroke-width="1.2"/></g>
     <ellipse cx="42" cy="32" rx="36" ry="24" fill="url(#${g})" stroke="rgba(0,0,0,.25)" stroke-width="1.5"/>
-    <path d="M28 16 Q23 32 28 48" stroke="rgba(0,0,0,.22)" stroke-width="1.6" fill="none"/>
-    <path d="M48 46 Q58 58 66 46" fill="${c2}"/>
+    <path clip-path="url(#${g}c)" d="${LG_ESCAMAS}" stroke="rgba(0,0,0,.2)" stroke-width="1.1" fill="none"/>
+    <path clip-path="url(#${g}c)" d="${LG_ESCAMAS}" stroke="rgba(255,255,255,.28)" stroke-width=".8" fill="none" transform="translate(0 -1)"/>
+    <ellipse cx="40" cy="20" rx="20" ry="5" fill="#fff" opacity=".22"/>
+    <path d="M28 16 Q23 32 28 48" stroke="rgba(0,0,0,.25)" stroke-width="1.8" fill="none"/>
+    <g class="pz-pectoral"><path d="M40 40 Q50 56 60 44 Q52 44 40 40z" fill="${c2}" stroke="rgba(0,0,0,.2)" stroke-width="1"/></g>
     <circle cx="17" cy="26" r="6" fill="#fff"/><circle cx="15.5" cy="26" r="3.3" fill="#111"/><circle cx="14.5" cy="24.8" r="1.1" fill="#fff"/>
     <path d="M7 38 Q11 41 15 38" stroke="rgba(0,0,0,.45)" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>` +
     (num ? `<span class="lg-num">${num}</span>` : '');
