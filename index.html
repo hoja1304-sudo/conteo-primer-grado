@@ -1520,9 +1520,10 @@ function czItem(){
   const n = CZ.n = CZ.orden[CZ.i];
   const OBJS = CZ.modo === 'grafica' ? GR_OBJ : CZ_OBJ, UNO = CZ.modo === 'grafica' ? GR_UNO : CZ_UNO;
   const tipos = Object.keys(OBJS).filter(t => t !== CZ.obj); CZ.obj = tipos[Math.floor(Math.random()*tipos.length)];
-  // distractores: dos cantidades cercanas a n (entre 1 y 9), distintas entre sí
-  const cerca = [1,2,3,4,5,6,7,8,9].filter(k => k !== n).sort((a, b) => Math.abs(a - n) - Math.abs(b - n) || Math.random() - .5).slice(0, 4);
-  const otras = cerca.sort(() => Math.random() - .5).slice(0, 2);
+  // distractores: SOLO números de la familia (los que conoce el estudiante), cercanos a n;
+  // en la familia de 1 a 2 hay solo dos opciones (el 1 y el 2)
+  const cerca = Array.from({length:CZ.fam}, (_, i) => i + 1).filter(k => k !== n).sort((a, b) => Math.abs(a - n) - Math.abs(b - n) || Math.random() - .5).slice(0, 4);
+  const otras = cerca.sort(() => Math.random() - .5).slice(0, Math.min(2, CZ.fam - 1));
   const ops = [n, ...otras].sort(() => Math.random() - .5);
   $('#czItem').textContent = `🎯 ${CZ.i + 1}/${CZ.fam}`;
   $('#czFb').innerHTML = '';
@@ -1538,7 +1539,7 @@ function czItem(){
     const txt = k => tipo === 'palabra' ? mayus(UNID[k]) : `<span class="cz-num">${k}</span>`;
     $('#czOpc').innerHTML = `<div class="cz-grupo" role="img" aria-label="${n} ${nombre(n)}"><div class="cz-objs">${obj[1].repeat(n)}</div></div>
       <p class="cz-cuantos">¿Cuántos hay?</p>
-      <div class="cz-resp">` + ops.map((k, j) => `<button class="cz-rb" data-k="${k}" aria-label="Opción ${'ABC'[j]}: ${tipo === 'palabra' ? UNID[k] : k}"><span class="cz-letra">${'ABC'[j]}</span>${txt(k)}</button>`).join('') + `</div>`;
+      <div class="cz-resp" style="grid-template-columns:repeat(${ops.length},minmax(0,1fr))">` + ops.map((k, j) => `<button class="cz-rb" data-k="${k}" aria-label="Opción ${'ABC'[j]}: ${tipo === 'palabra' ? UNID[k] : k}"><span class="cz-letra">${'ABC'[j]}</span>${txt(k)}</button>`).join('') + `</div>`;
   }
 }
 $('#czOpc').addEventListener('click', e => {
